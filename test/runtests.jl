@@ -4,8 +4,16 @@ Pkg.add(url="https://github.com/LilithHafner/FBD")
 using FBDCompare
 using Test
 
+ci = ("CI"=>"true") ∈ ENV
+gui = !ci
+
 @testset "Kronecker" begin
-    Kronecker.plot()
+    if gui
+        Kronecker.plot()
+    else
+        Kronecker.generate_data()
+        @test_broken false
+    end
     @test true
 end
 
