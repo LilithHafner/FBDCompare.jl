@@ -1,5 +1,5 @@
 using Pkg
-Pkg.add("https://github.com/LilithHafner/FBD.jl")
+Pkg.add(url="https://github.com/LilithHafner/FBD")
 
 using FBDCompare
 using Test
