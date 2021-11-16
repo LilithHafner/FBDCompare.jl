@@ -1,3 +1,6 @@
+using Pkg
+Pkg.add(url="https://github.com/LilithHafner/FBD")
+
 using FBDCompare
 using Documenter
 
