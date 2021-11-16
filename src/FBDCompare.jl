@@ -1,7 +1,9 @@
 module FBDCompare
 
-export hyperkron_graph, kron_params
+export Kronecker, HyperPA
 
-include("hyperkron.jl")
+include("hyper_pa.jl")
+
+include("kronecker.jl")
 
 end

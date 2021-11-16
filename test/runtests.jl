@@ -1,8 +1,15 @@
 using FBDCompare
 using Test
 
-include("hyperkron.jl")
+@testset "Kronecker" begin
+    Kronecker.plot()
+    @test true
+end
 
-printstyled("hyper_pa is external and not tested\n", color=Base.info_color())
-
-printstyled("benchmarking is untested and likely broken\n", color=Base.error_color())
+@testset "HyperPA" begin
+    HyperPA.jl_benchmark()
+    HyperPA.jl_profile()
+    HyperPA.jl_with_io()
+    HyperPA.external()
+    @test true
+end

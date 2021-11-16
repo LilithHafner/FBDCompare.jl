@@ -1,3 +1,4 @@
+#=
 t0 = 1.636823339966585e9
 times = []
 ks = []
@@ -24,3 +25,4 @@ while true
     display(scatter(vcat(0,times .- t0), vcat(0, ks), legend=false))
     sleep(10)
 end
+=#
