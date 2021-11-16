@@ -1,3 +1,6 @@
+using Pkg
+Pkg.add("https://github.com/LilithHafner/FBD.jl")
+
 using FBDCompare
 using Test
 
