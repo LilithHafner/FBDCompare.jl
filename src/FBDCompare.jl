@@ -1,5 +1,7 @@
 module FBDCompare
 
-# Write your package code here.
+export hyperkron_graph, kron_params
+
+include("hyperkron.jl")
 
 end

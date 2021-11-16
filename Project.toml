@@ -3,6 +3,12 @@ uuid = "c1619e13-1912-489c-9df7-aeb4532e60b6"
 authors = ["Lilith Orion Hafner <60898866+LilithHafner@users.noreply.github.com> and contributors"]
 version = "0.0.0"
 
+[deps]
+FBD = "86f54e4b-c326-4f4b-ad74-639fc688eb37"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
+SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
+
 [compat]
 julia = "1.6"
 
