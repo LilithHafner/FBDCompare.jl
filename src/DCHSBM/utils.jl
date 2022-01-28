@@ -3,8 +3,6 @@ function partitionize(a::Vector{<:Integer})
     For a given integer vector a, return the partition corresponding to that
     vector. Useful for both counting corrections when sampling and computing
     likelihoods, and when computing partition-based values of Ω.
-
-    This is the fastest version I could come up with.
     """
     a = sort(a)
     k = length(a)

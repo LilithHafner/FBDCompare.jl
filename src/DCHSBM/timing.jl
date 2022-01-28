@@ -23,12 +23,13 @@ t = @elapsed d,r = sampleEdges(Z, θ, Ω, α=[.0001,.00001], kmin=2, kmax=3)
 hypergraphsize = sum([k*sum(values(x)) for (k,x) in d])
 println("","D: $(hypergraphsize/t), $t")
 
-#begin coppied from HypergraphModularity/test/runtests.jl
+#begin coppied from https://github.com/nveldt/HyperModularity.jl/blob/0478acb5e209550cbaf7572f4151c4569f64faf6/test/runtests.jl#L20
 n = 40 # modified to change n from 20
 Z = rand(1:5, n)
+Z = Int64.(Z)
 ϑ = dropdims(ones(1,n) + rand(1,n), dims = 1)
 μ = mean(ϑ)
-kmax = 4
+kmax = Int64(4)
 
 scaling_factor = .01 # modified to add scaling factor
 ω(x, α) = scaling_factor*(x[1]+1)^(-α[x[2]]*x[2]) # modified to add scaling factor
@@ -37,7 +38,7 @@ scaling_factor = .01 # modified to add scaling factor
 
 Ω = sumOfExteriorDegreesIntensityFunction(ω, kmax)
 t = @elapsed d, nodes = sampleEdges(Z, ϑ, Ω;α=α, kmax=kmax, kmin = 1) # modified
-#end coppied from HypergraphModularity/test/runtests.jl
+#end coppied from https://github.com/nveldt/HyperModularity.jl/blob/0478acb5e209550cbaf7572f4151c4569f64faf6/test/runtests.jl#L20
 hypergraphsize = sum([k*sum(values(x)) for (k,x) in d])
 edges = sum([sum(values(x)) for (k,x) in d])
 possible_edges = sum([binomial(n,k) for k in 1:kmax])
