@@ -1,15 +1,17 @@
+module ER
+
 using Random: GLOBAL_RNG
 using Distributions
 
-function coin_flip_er(n, k, m, rng=GLOBAL_RNG)
+function coin_flip(n, k, m, rng=GLOBAL_RNG)
     size = n^k
     p = m/size
     out = NTuple{k, Int}[]
     sizehint!(out, m+ceil(Integer,sqrt(m)))
-    coin_flip_er_kernal(Iterators.product([1:n for _ in 1:k]...), rng, p, out)
+    coin_flip_kernal(Iterators.product([1:n for _ in 1:k]...), rng, p, out)
     out
 end
-function coin_flip_er_kernal(iter, rng, p, out)
+function coin_flip_kernal(iter, rng, p, out)
     for i in iter
         if rand(rng) < p
             push!(out, i)
@@ -18,7 +20,7 @@ function coin_flip_er_kernal(iter, rng, p, out)
     out
 end
 
-function grass_hop_er(n, k, m, rng=GLOBAL_RNG)
+function grass_hop(n, k, m, rng=GLOBAL_RNG)
     size = n^k
     p = m/size
     out = Vector{Int}[]
@@ -40,4 +42,6 @@ function grass_hop_er(n, k, m, rng=GLOBAL_RNG)
         end
         push!(out, copy(i))
     end
+end
+
 end
