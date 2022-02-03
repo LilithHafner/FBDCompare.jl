@@ -1,0 +1,1 @@
+This directory (excluding source.txt) is copied directly from https://github.com/manhtuando97/KDD-20-Hypergraph/tree/8cf291784025aaf4fbe618e5d9f6934a19d75b61/Code/Generator
