@@ -1,3 +1,4 @@
+# entire file copied from https://www.cs.purdue.edu/homes/dgleich/codes/hyperkron/hyperkron.jl
 """
 authors:
 David F. Gleich
