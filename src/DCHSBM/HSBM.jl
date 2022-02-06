@@ -1,4 +1,4 @@
-using Parameters
+using Parameters, Combinatorics, Distributions
 
 """
 The purpose of this module is to define a flexible stochastic blockmodel for hypergraphs. At this stage, all we are aiming to do is *sample* from the model give a partition, a group intensity function, and a degree vector.
