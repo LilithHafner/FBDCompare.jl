@@ -1,2 +1,1 @@
 HSBM.jl, omega.jl, and utils.jl are copied directly from https://github.com/nveldt/HyperModularity.jl/tree/0478acb5e209550cbaf7572f4151c4569f64faf6/src with the exception of adding a missing using statement to HSBM.jl
-timing.jl also draws from that repository.
