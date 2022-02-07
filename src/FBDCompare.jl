@@ -2,18 +2,25 @@ module FBDCompare
 
 using FBD
 
-export Kronecker, HyperPA
+export ER, Kronecker, DCHSBM, HyperPA
 
-#include("hyper_pa.jl")
+include("er.jl")
 
-#include("kronecker.jl")
+module Kronecker
+    include("hyperkron.jl")
+end
 
-#include("er.jl")
+module DCHSBM
+    include("DCHSBM/utils.jl")
+    include("DCHSBM/omega.jl")
+    include("DCHSBM/HSBM.jl")
+end
 
-#include("figure1.jl")
+include("hyper_pa.jl")
 
-include("DCHSBM/utils.jl")
-include("DCHSBM/omega.jl")
-include("DCHSBM/HSBM.jl")
+include("evaluation/test_functions.jl")
+include("evaluation/statistics.jl")
+
+include("figures.jl")
 
 end
