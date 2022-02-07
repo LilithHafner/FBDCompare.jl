@@ -32,14 +32,24 @@ first_row_x = (
     xticks = 10.0 .^ (0:6),
 )
 first_row = (
-    yaxis = :log,
-    ylims = (10^-6.1, 10^-.9),
-    yticks = 10.0 .^ (-6:3),
-    fontfamily = "times",
+    yaxis = :log10,
     xlabel = "size",
     ylabel = "runtime (s)",
+    guidefontsize = 14,
+    ylims = (10^-6.1, 10^-.9),
+    #yticks = [1e-6, 1e-5],
+    yticks = 10.0 .^ ((-6.0):3.0),
+    fontfamily = "times",
+    tickfontsize = 12,
+    legendfontsize = 12,
+    legend =:topleft,
+    labels = ["FBD" "CVB"],
+    #grid = false,
+    #markerstrokewidth = 0,
+    markersize = 7,
     first_row_x...
-)
+    )
+
 function make_figure_1()
     fs, target = unzip(shuffle!(repeat(vcat(
         [(new_dchsbm, t) for t in 10 .^ (0:.5:6)],
@@ -63,6 +73,7 @@ function make_figure_2()
 
     I = middles(times, target, fs)
     scatter(sizes[I], times[I], group=string.(fs[I]); first_row...)
+    xlabel!("size", fontsize = 16, fontweight = :bold)
 end
 function make_figure_3()
     fs, target = unzip(shuffle!(repeat(vcat(
@@ -90,9 +101,17 @@ function make_figure_4()
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
         yaxis = :log, yticks = 10.0 .^(-9:-2),
         fontfamily = "times",
+        guidefontsize = 14,
+        tickfontsize = 12,
+        legendfontsize = 12,
+        legend=:topleft,
         ylabel = "runtime (s) / size",
         xlabel = "log(edges) / log(nodes)",
-        xlims = (1,7))
+        xlims = (1,7),
+        labels = ["FBD" "CVB"],
+        grid = false,
+        #markerstrokewidth = 0,
+        markersize = 7)
 end
 function make_figure_5()
     fs, target = unzip(shuffle!(repeat(vcat(
@@ -105,10 +124,18 @@ function make_figure_5()
 
     I = middles(times, target, fs)
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
-        yaxis = :log, yticks = 10.0 .^(-9:-2),
+        yaxis = :log, yticks = 10.0 .^((-9):(-2)),
         fontfamily = "times",
+        guidefontsize = 14,
+        tickfontsize = 12,
+        legendfontsize = 12,
+        legend=:topleft,
         ylabel = "runtime (s) / size",
-        xlabel = "log(edges) / log(nodes)")
+        xlabel = "log(edges) / log(nodes)",
+        labels = ["FBD" "CVB"],
+        grid = false,
+        #markerstrokewidth = 0,
+        markersize = 7)
 end
 
 function make_figure_6()
@@ -122,10 +149,19 @@ function make_figure_6()
 
     I = middles(times, target, fs)
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
-        yaxis = :log, yticks = 10.0 .^(-9:-2),
+        yaxis = :log,
+        yticks = 10.0 .^(-9:-2),
+        guidefontsize = 14,
+        tickfontsize = 12,
+        legendfontsize = 12,
+        legend=:topleft,
         fontfamily = "times",
         ylabel = "runtime (s) / size",
-        xlabel = "log(edges) / log(nodes)")
+        xlabel = "log(edges) / log(nodes)",
+        labels = ["FBD" "ERG"],
+        grid = false,
+        #markerstrokewidth = 0,
+        markersize = 7)
 end
 
 
