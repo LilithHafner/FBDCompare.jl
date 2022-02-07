@@ -1,7 +1,7 @@
 using Pkg
 Pkg.add(url="https://github.com/LilithHafner/FBD")
 
-using FBD, FBDCompare
+using FBDCompare
 using Test
 
 ci = ("CI"=>"true") ∈ ENV
@@ -23,6 +23,6 @@ ModuleNotFoundError: No module named 'numpy'
     @test true
 end
 
-@test hypergraphsize((Dict{Int64, Dict}(4 => Dict{Vector{Int64}, Int64}(), 2 => Dict([2, 4] => 1, [2, 6] => 1, [7, 7] => 1), 3 => Dict([5, 6, 6] => 1, [6, 6, 6] => 1), 1 => Dict([3] => 1, [7] => 1)), 1:7)) == 14
+@test FBDCompare.hypergraphsize((Dict{Int64, Dict}(4 => Dict{Vector{Int64}, Int64}(), 2 => Dict([2, 4] => 1, [2, 6] => 1, [7, 7] => 1), 3 => Dict([5, 6, 6] => 1, [6, 6, 6] => 1), 1 => Dict([3] => 1, [7] => 1)), 1:7)) == 14
 
 FBDCompare.save_figures()
