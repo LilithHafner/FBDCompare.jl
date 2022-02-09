@@ -1,6 +1,7 @@
 using Plots
 using Unzip
 using Random: shuffle!
+using LaTeXStrings
 
 ## util
 function datapoint(f, target_size, target_density=nothing)
@@ -26,24 +27,26 @@ function middles(y, x...)
 end
 
 # Plotting functions
+const DATA = [[] for _ in 1:6]
+const COMPUTE = Ref(true)
+scale=0
 first_row_x = (
     xaxis = :log,
-    xlims = (10^.9, 10^6.1),
-    xticks = 10.0 .^ (0:6),
+    #xlims = (10^.9, 10^8.6),
+    xticks = (10.0 .^ (0:9), [L"\large\bf 10^{%$i}" for i in 0:9]),
 )
 first_row = (
     yaxis = :log10,
-    xlabel = "size",
-    ylabel = "runtime (s)",
-    guidefontsize = 14,
-    ylims = (10^-6.1, 10^-.9),
+    xlabel = L"\textrm{\large\bf hypergraph size   .}",
+    ylabel = L"\textrm{\large\bf runtime (s)}",
+    guidefontsize = 4,
+    #ylims = (10^-6.1, 10^-.9),
     #yticks = [1e-6, 1e-5],
-    yticks = 10.0 .^ ((-6.0):3.0),
+    yticks = (10.0 .^ ((-6.0):3.0), [L"\large\bf 10^{%$i}" for i in -6:3]),
     fontfamily = "times",
-    tickfontsize = 12,
+    tickfontsize = 15,
     legendfontsize = 12,
     legend =:topleft,
-    labels = ["FBD" "CVB"],
     #grid = false,
     #markerstrokewidth = 0,
     markersize = 7,
@@ -51,179 +54,175 @@ first_row = (
     )
 
 function make_figure_1()
-    fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_dchsbm, t) for t in 10 .^ (0:.5:6)],
-        [(old_dchsbm, t) for t in 10 .^ (0:.5:3)]), 3)))
+    #500s at scale = 2
+    fs, target = unzip(shuffle!(vcat(
+        [(new_dchsbm, t) for t in 10 .^ (1:.5:7.5+scale)],
+        [(old_dchsbm, t) for t in 10 .^ (1:.5:4.5+scale)],
+        repeat(vcat(
+        [(new_dchsbm, t) for t in 10 .^ (1:.5:6+scale/2)],
+        [(old_dchsbm, t) for t in 10 .^ (1:.5:3+scale/2)]), 10),
+        repeat(
+        [(new_dchsbm, t) for t in 10 .^ (1:.5:3.5+scale/2)], 1000))))
 
-    @time sizes, times, densities = unzip(datapoint.(fs, target))
+    if COMPUTE[]
+        @time sizes, times, densities = unzip(datapoint.(fs, target))
+        push!(DATA[1], (fs, target, sizes, times, densities))
+    else
+        fs, target, sizes, times, densities = last(DATA[1])
+    end
 
     #display(scatter(sizes, densities, group=string.(fs) .* " density"; first_row_x...))
 
     I = middles(times, target, fs)
-    scatter(sizes[I], times[I], group=string.(fs[I]); first_row...)
+    scatter(sizes[I], times[I], group=string.(fs[I]); labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf CVB}"], first_row...)
 end
 function make_figure_2()
-    fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_kronecker, t) for t in 10 .^ (0:.5:5.5)],
-        [(old_kronecker, t) for t in 10 .^ (0:.5:4)]), 3)))
+    fs, target = unzip(shuffle!(vcat(
+        [(new_kronecker, t) for t in 10 .^ (1:.5:6.5+scale)],
+        [(old_kronecker, t) for t in 10 .^ (1:.5:5.5+scale)],
+        repeat(vcat(
+        [(new_kronecker, t) for t in 10 .^ (1:.5:6+scale/2)],
+        [(old_kronecker, t) for t in 10 .^ (1:.5:5+scale/2)]), 10),
+        repeat(vcat(
+        [(new_kronecker, t) for t in 10 .^ (1:.5:3+scale/2)],
+        [(old_kronecker, t) for t in 10 .^ (1:.5:2+scale/2)]), 1000))))
 
-    @time sizes, times, densities = unzip(datapoint.(fs, target))
+    if COMPUTE[]
+        @time sizes, times, densities = unzip(datapoint.(fs, target))
+        push!(DATA[2], (fs, target, sizes, times, densities))
+    else
+        fs, target, sizes, times, densities = last(DATA[2])
+    end
 
     #display(scatter(sizes, densities, group=string.(fs) .* " density"; first_row_x...))
 
     I = middles(times, target, fs)
-    scatter(sizes[I], times[I], group=string.(fs[I]); first_row...)
-    xlabel!("size", fontsize = 16, fontweight = :bold)
+    scatter(sizes[I], times[I], group=string.(fs[I]); labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf ERG}"], first_row...)
 end
+
 function make_figure_3()
-    fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_hyperpa, t) for t in 10 .^ (0:.5:5.5)],
-        [(old_hyperpa, t) for t in []#=45000=#]), 1)))
+    fs, target = unzip(shuffle!(vcat(
+        [(new_hyperpa, t) for t in 10 .^ (2:.5:6.5+scale)],
+        (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:1)] : []),
+        repeat(
+        [(new_hyperpa, t) for t in 10 .^ (2:.5:6+scale/2)], 10),
+        repeat(
+        [(new_hyperpa, t) for t in 10 .^ (2:.5:3+scale/2)], 1000))))
 
-    @time sizes, times, densities = unzip(datapoint.(fs, target))
+    if COMPUTE[]
+        @time sizes, times, densities = unzip(datapoint.(fs, target))
+        push!(DATA[3], (fs, target, sizes, times, densities))
+    else
+        fs, target, sizes, times, densities = last(DATA[3])
+    end
 
     #display(scatter(sizes, densities, group=string.(fs) .* " density"; first_row_x...))
 
     I = middles(times, target, fs)
-    scatter(sizes[I], times[I], group=string.(fs[I]); first_row...)
+
+    scatter(sizes[I], times[I], group=string.(fs[I]); labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf TYHS}"], first_row...)
 end
 
+trials = 1
 function make_figure_4()
+    #12 seconds at trials=1
     fs, target = unzip(shuffle!(repeat(vcat(
-        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in 10 .^ ((-20:1:3).+3 .- LinRange(-√3,√3,24).^2)],
-        [((x,y) -> old_dchsbm(x,y,kmax=10), t) for t in 10 .^ (1:.25:2.5)]), 3)))
+        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in 10 .^ ((-17:1:1).+4 .- LinRange(-√4,√4,19).^2)],
+        [((x,y) -> old_dchsbm(x,y,kmax=10), t) for t in 10 .^ (1:.05:1.8).+.3 .- LinRange(-√.3,√.3,17).^2]), trials)))
 
-    @time sizes, times, densities = unzip(datapoint.(fs, 10^5, target))
+    if COMPUTE[]
+        @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
+        push!(DATA[4], (fs, target, sizes, times, densities))
+    else
+        fs, target, sizes, times, densities = last(DATA[4])
+    end
 
-    #display(scatter(sizes, densities, group=string.(fs) .* " density"; first_row_x...))
+    #display(scatter(densities, sizes, group=string.(fs) .* " density"; yaxis = :log))
 
     I = middles(times, target, fs)
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
-        yaxis = :log, yticks = 10.0 .^(-9:-2),
+        yaxis = :log,
+        yticks = (10.0 .^ (-8:-6), [L"\large\bf 10^{%$i}" for i in -8:-6]),
+        xticks = (2:6, [L"\large\bf %$x" for x in 2:6]),
         fontfamily = "times",
         guidefontsize = 14,
-        tickfontsize = 12,
+        tickfontsize = 15,
         legendfontsize = 12,
         legend=:topleft,
-        ylabel = "runtime (s) / size",
-        xlabel = "log(edges) / log(nodes)",
-        xlims = (1,7),
-        labels = ["FBD" "CVB"],
-        grid = false,
+        ylabel = L"\textrm{\large\bf runtime (s) / hypergraph size   .}",
+        xlabel = L"\textrm{\large\bf log(edges) / log(nodes)}",
+        xlims = (2,6),
+        labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf CVB}"],
+        #grid = false,
         #markerstrokewidth = 0,
         markersize = 7)
 end
 function make_figure_5()
+    # 200?s at trials=1
     fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_dchsbm, t) for t in 10 .^ ((-6:.5:1).+2 .- LinRange(-√2,√2,15).^2)],
-        [(old_dchsbm, t) for t in 10 .^ (-1:.25:1)]), 3)))
+        [(new_dchsbm, t) for t in 10 .^ ((-10:.5:1).+2 .- LinRange(-√2,√2,23).^2)],
+        [(old_dchsbm, t) for t in 10 .^ (-1:.15:1)]), trials)))
 
-    @time sizes, times, densities = unzip(datapoint.(fs, 10^4, target))
+    if COMPUTE[]
+        @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
+        push!(DATA[5], (fs, target, sizes, times, densities))
+    else
+        fs, target, sizes, times, densities = last(DATA[5])
+    end
 
-    #display(scatter(sizes, densities, group=string.(fs) .* " density"; first_row_x...))
+    #display(scatter(densities, sizes, group=string.(fs) .* " density"; yaxis = :log))
 
     I = middles(times, target, fs)
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
-        yaxis = :log, yticks = 10.0 .^((-9):(-2)),
+        yaxis = :log,
+        yticks = (10.0 .^ (-7:-2), [L"\large\bf 10^{%$i}" for i in -7:-2]),
+        xticks = (1:.5:3, [L"\large\bf %$x" for x in 1:.5:3]),
+        xlims = (1,3),
         fontfamily = "times",
         guidefontsize = 14,
-        tickfontsize = 12,
+        tickfontsize = 15,
         legendfontsize = 12,
         legend=:topleft,
-        ylabel = "runtime (s) / size",
-        xlabel = "log(edges) / log(nodes)",
-        labels = ["FBD" "CVB"],
-        grid = false,
+        ylabel = L"\textrm{\large\bf runtime (s) / hypergraph size   .}",
+        xlabel = L"\textrm{\large\bf log(edges) / log(nodes)}",
+        labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf CVB}"],
+        #grid = false,
         #markerstrokewidth = 0,
         markersize = 7)
 end
 
 function make_figure_6()
+    # 65s at trials = 1
     fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_kronecker, t) for t in 10 .^ (-6.5:.5:1)],
-        [(old_kronecker, t) for t in 10 .^ (-5.5:.5:1)]), 3)))
+        [(new_kronecker, t) for t in [1e-13, 1e-11, 2e-9, 1e-7, 2e-6, 4e-5, 3e-4, 1e-3, 1e-2, 1e-1, 1, 10]],
+        [(old_kronecker, t) for t in [1e-13, 1e-11, 1e-9, 5e-8, 2e-6, 4e-5, 1e-3, 1e-2, 1e-1, .5, 1, 10, 100]]), trials)))
 
-    @time sizes, times, densities = unzip(datapoint.(fs, 10^4, target))
+    if COMPUTE[]
+        @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
+        push!(DATA[6], (fs, target, sizes, times, densities))
+    else
+        fs, target, sizes, times, densities = last(DATA[6])
+    end
 
-    #display(scatter(sizes, densities, group=string.(fs) .* " density"; first_row_x...))
+    #display(scatter(densities, sizes, group=string.(fs) .* " density"; yaxis = :log))
 
     I = middles(times, target, fs)
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
         yaxis = :log,
-        yticks = 10.0 .^(-9:-2),
+        yticks = (10.0 .^ (-7:-2), [L"\large\bf 10^{%$i}" for i in -7:-2]),
+        xticks = (1:.5:3, [L"\large\bf %$x" for x in 1:.5:3]),
+        xlims = (1,3),
         guidefontsize = 14,
-        tickfontsize = 12,
+        tickfontsize = 15,
         legendfontsize = 12,
-        legend=:topleft,
+        legend=:topright,
         fontfamily = "times",
-        ylabel = "runtime (s) / size",
-        xlabel = "log(edges) / log(nodes)",
-        labels = ["FBD" "ERG"],
-        grid = false,
+        ylabel = L"\textrm{\large\bf runtime (s) / hypergraph size   .}",
+        xlabel = L"\textrm{\large\bf log(edges) / log(nodes)}",
+        labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf ERG}"],
+        #grid = false,
         #markerstrokewidth = 0,
         markersize = 7)
-end
-
-
-function figure2(;points=30,trials=3,min_size=1,max_size=3e6,old_max_sizes=[5e3,1e5,0],
-    names = string.(first.(test_functions)))
-    for ((old, new), old_max_size, name) in zip(test_functions, old_max_sizes, names)
-        sizes = exp.(LinRange(log(min_size),log(max_size),points))
-        independant = vec(repeat(collect(Iterators.product((new,old), sizes)), outer=trials))
-        filter!(independant) do x
-            generator, target_size = x
-            # the old algorithms are substantially slower, so we can't go as large
-            generator === new || target_size <= old_max_size
-        end
-        shuffle!(independant)
-        dependant = map(independant) do x
-            generator, target_size = x
-            t = @elapsed g = generator(round(Integer, target_size))
-            size = hypergraphsize(g)
-            t, size
-        end
-        data = collect(zip(independant, dependant))
-        sort!(data, by=x->((x[1][1]==new),x[1][2:end],x[2:end]))
-        data = data[trials÷2+1:trials:end]
-        p = plot(title = "$new/$old\nmedian of $trials trials", xaxis=:log, xlabel="hpergraph size", yaxis=:log, ylabel="time (s)")
-        for target in (new,old)
-            target_data = last.(filter(x -> x[1][1] === target, data))
-            scatter!(p, max.(1,last.(target_data)), first.(target_data), label=string(target))
-        end
-        display(p)
-    end
-end
-
-function figure3(;points=30,trials=3,size=5e3,old_min_densities=[1, 1e-3,0],
-    names = ["kmax=10", string.(first.(test_functions[1:2]))...])
-    for ((old, new), old_min_density, name) in zip([[(x,y)->f(x,y,kmax=10) for f in test_functions[1]], test_functions[1:2]...], old_min_densities, names)
-        densities = exp.(LinRange(log(1e-12),log(1e1),points))
-        independant = vec(repeat(collect(Iterators.product((new,old), densities)), outer=trials))
-
-        filter!(independant) do x
-            generator, target_density = x
-            # the old algorithms are substantially slower, so we can't go as large
-            generator === new || target_density >= old_min_density
-        end
-
-        shuffle!(independant)
-        dependant = map(independant) do x
-            generator, target_density = x
-            t = @elapsed g = generator(round(Integer, size), target_density)
-            d = log_density(g)
-            hypergraphsize(g), t/hypergraphsize(g), d
-        end
-        data = collect(zip(independant, dependant))
-        sort!(data, by=x->((x[1][1]==new),x[1][2:end],x[2:end]))
-        data = data[trials÷2+1:trials:end]
-        p = plot(title = "$new/$old\nmedian of $trials trials", xlabel="log(edges)/log(nodes)", yaxis=:log, ylabel="time per edge (s)")
-        for target in (new,old)
-            target_data = last.(filter(x -> x[1][1] === target, data))
-            scatter!(p, last.(target_data), [x[2] for x in target_data], label=string(target))
-            #scatter!(p, last.(target_data), first.(target_data)/1e11, label=string(target)*"edges")
-        end
-        display(p)
-    end
 end
 
 ## Post processing
