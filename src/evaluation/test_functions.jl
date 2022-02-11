@@ -59,14 +59,14 @@ end
 function new_kronecker(size)
     power = max(1, round(Integer, log(2*size)/log(sum(KRON_PARAMS))))
 
-    sampler = Kronecker_sampler(KRON_PARAMS, power)
+    sampler = Kronecker_sampler(KRON_PARAMS, power, space=min(size÷10,30000))
 
     rand(sampler, round(Integer, size/3))
 end
 function new_kronecker(size, density)
     power = max(1, round(Integer, log(2*size/density)/log(8)))
 
-    sampler = Kronecker_sampler(KRON_PARAMS, power)
+    sampler = Kronecker_sampler(KRON_PARAMS, power, space=min(size÷10,30000))
 
     rand(sampler, round(Integer, size/3))
 end

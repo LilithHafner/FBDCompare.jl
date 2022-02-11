@@ -55,8 +55,8 @@ first_row = (
 function make_figure_1()
     #500s at scale = 2
     fs, target = unzip(shuffle!(vcat(
-        [(new_dchsbm, t) for t in 10 .^ (1:.5:8+scale)],
-        [(old_dchsbm, t) for t in 10 .^ (1:.5:5+scale)],
+        [(new_dchsbm, t) for t in 10 .^ (1:.5:7.5+scale)],
+        [(old_dchsbm, t) for t in 10 .^ (1:.5:4.5+scale)],
         repeat(vcat(
         [(new_dchsbm, t) for t in 10 .^ (1:.5:6.5+scale)],
         [(old_dchsbm, t) for t in 10 .^ (1:.5:3.5+scale)]), 10),
@@ -80,13 +80,13 @@ end
 function make_figure_2()
     fs, target = unzip(shuffle!(vcat(
         [(new_kronecker, t) for t in 10 .^ (1:.5:7.5+scale)],
-        [(old_kronecker, t) for t in 10 .^ (1:.5:6.5+scale)],
+        [(old_kronecker, t) for t in 10 .^ (1:.5:6+scale)],
         repeat(vcat(
-        [(new_kronecker, t) for t in 10 .^ (1:.5:6+scale)],
+        [(new_kronecker, t) for t in 10 .^ (1:.5:6.5+scale)],
         [(old_kronecker, t) for t in 10 .^ (1:.5:5+scale)]), 10),
         repeat(vcat(
         [(new_kronecker, t) for t in 10 .^ (1:.5:3.5+scale/2)],
-        [(old_kronecker, t) for t in 10 .^ (1:.5:2.5+scale/2)]), 1000))))
+        [(old_kronecker, t) for t in 10 .^ (1:.5:2+scale/2)]), 1000))))
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, target))
@@ -108,8 +108,9 @@ function make_figure_3()
         (scale >= 2 ? [(new_hyperpa, 8.25)] : []),
         [(new_hyperpa, t) for t in 10 .^ (2:.5:6.5+scale)],
         (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:1)] : []),
-        repeat(
-        [(new_hyperpa, t) for t in 10 .^ (2:.5:5+scale)], 10),
+        repeat(vcat(
+        (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:.5)] : []),
+        [(new_hyperpa, t) for t in 10 .^ (2:.5:5.5+scale)]), 10),
         repeat(
         [(new_hyperpa, t) for t in 10 .^ (2:.5:3+scale/2)], 1000))))
 
@@ -134,8 +135,8 @@ end
 function make_figure_4()
     #12 seconds at trials=1
     fs, target = unzip(shuffle!(repeat(vcat(
-        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in 10 .^ ((-17:1:1).+4 .- LinRange(-√4,√4,19).^2)],
-        [((x,y) -> old_dchsbm(x,y,kmax=10), t) for t in 10 .^ (1:.05:1.8).+.3 .- LinRange(-√.3,√.3,17).^2]), 101)))
+        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in vcat([3e-21, 1.5e-19], 10 .^ ((-17:1:1).+4 .- LinRange(-√4,√4,19).^2))],
+        [((x,y) -> old_dchsbm(x,y,kmax=10), t) for t in 9:.5:15]), 15)))
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
@@ -149,7 +150,7 @@ function make_figure_4()
     I = middles(times, target, fs)
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
         yaxis = :log,
-        yticks = (10.0 .^ (-7:-4), [L"\large\bf 10^{%$i}" for i in -7:-4]),
+        yticks = (10.0 .^ (-8:-4), [L"\large\bf 10^{%$i}" for i in -8:-4]),
         xticks = (2:6, [L"\large\bf %$x" for x in 2:6]),
         bottom_margin = 10Plots.px,
         fontfamily = "times",
@@ -158,7 +159,7 @@ function make_figure_4()
         legendfontsize = 12,
         legend=:topleft,
         ylabel = L"\textrm{\large\bf runtime (s) / hypergraph size      ..}",
-        xlabel = L"\textrm{\large\bf log(edges) / log(nodes)}",
+        xlabel = L"\textrm{\large\bf log(hypergraph size) / log(nodes)}",
         xlims = (2,6),
         labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf CVB}"],
         #grid = false,
@@ -166,9 +167,9 @@ function make_figure_4()
         markersize = 7)
 end
 function make_figure_5()
-    # 200?s at trials=1
+    # 1 hour? at trials=11
     fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_dchsbm, t) for t in 10 .^ ((-10:.5:1).+2 .- LinRange(-√2,√2,23).^2)],
+        [(new_dchsbm, t) for t in vcat([1e-11], 10 .^ ((-10:.5:1).+2 .- LinRange(-√2,√2,23).^2))],
         [(old_dchsbm, t) for t in 10 .^ (-1.4:.2:1)]), 11)))
 
     if COMPUTE[]
@@ -194,7 +195,7 @@ function make_figure_5()
         legendfontsize = 12,
         legend=:topleft,
         #ylabel = L"\textrm{\large\bf runtime (s) / hypergraph size      ..}",
-        xlabel = L"\textrm{\large\bf log(edges) / log(nodes)}",
+        xlabel = L"\textrm{\large\bf log(hypergraph size) / log(nodes)}",
         labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf CVB}"],
         #grid = false,
         #markerstrokewidth = 0,
@@ -202,10 +203,10 @@ function make_figure_5()
 end
 
 function make_figure_6()
-    # 65s at trials = 1
+    # 16m at trials = 15
     fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_kronecker, t) for t in [1e-13, 1e-11, 2e-9, 1e-7, 2e-6, 4e-5, 3e-4, 1e-3, 1e-2, 1e-1, 1, 10]],
-        [(old_kronecker, t) for t in [1e-13, 1e-11, 1e-9, 5e-8, 2e-6, 4e-5, 1e-3, 1e-2, 1e-1, .5, 1, 10, 100]]), 51)))
+        [(new_kronecker, t) for t in [1e-49, 1e-45, 1e-40, 1e-37, 1e-30, 1e-24, 1e-20, 1e-14, 1e-13, 1e-9, 1e-7, 3e-4, 3e-2, 3e3] * 1e-4],
+        [(old_kronecker, t) for t in [1e-13, 1e-11, 1e-9, 5e-8, 2e-6, 4e-5, 1e-3, 1e-2, 1e-1, .5, 1, 10, 100]]), 15)))
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
@@ -230,7 +231,7 @@ function make_figure_6()
         legend=:topright,
         fontfamily = "times",
         #ylabel = L"\textrm{\large\bf runtime (s) / hypergraph size      ..}",
-        xlabel = L"\textrm{\large\bf log(edges) / log(nodes)}",
+        xlabel = L"\textrm{\large\bf log(hypergraph size) / log(nodes)}",
         labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf ERG}"],
         #grid = false,
         #markerstrokewidth = 0,
@@ -243,18 +244,18 @@ function save_figures()
     path = joinpath(dirname(@__DIR__), "figures", "")
     mkpath(path)
 
-    COMPUTE[] && display("Saved: $(save_data())")
-    savefig(make_figure_1(), path*"dchsbm_size.pdf")
-    COMPUTE[] && display("Saved: $(save_data())")
-    savefig(make_figure_2(), path*"kronecker_size.pdf")
-    COMPUTE[] && display("Saved: $(save_data())")
-    savefig(make_figure_3(), path*"hyperpa_size.pdf")
+    #COMPUTE[] && display("Saved: $(save_data())")
+    #savefig(make_figure_1(), path*"dchsbm_size.pdf")
+    #COMPUTE[] && display("Saved: $(save_data())")
+    #savefig(make_figure_2(), path*"kronecker_size.pdf")
+    #COMPUTE[] && display("Saved: $(save_data())")
+    #savefig(make_figure_3(), path*"hyperpa_size.pdf")
     COMPUTE[] && display("Saved: $(save_data())")
     savefig(make_figure_4(), path*"dchsbm_density_k10.pdf")
-    COMPUTE[] && display("Saved: $(save_data())")
-    savefig(make_figure_5(), path*"dchsbm_density_k3.pdf")
-    COMPUTE[] && display("Saved: $(save_data())")
-    savefig(make_figure_6(), path*"kronecker_density_k3.pdf")
+    #COMPUTE[] && display("Saved: $(save_data())")
+    #savefig(make_figure_5(), path*"dchsbm_density_k3.pdf")
+    #COMPUTE[] && display("Saved: $(save_data())")
+    #savefig(make_figure_6(), path*"kronecker_density_k3.pdf")
     COMPUTE[] && display("Saved: $(save_data())")
 end
 
@@ -275,4 +276,59 @@ function load_data(n)
     d = eval(e)
     DATA .= d
     COMPUTE[] || nothing
+end
+
+
+
+## The figure at the beginning of the paper
+function fbd_with_duplicate_removal(s::FBD.ER_sampler{N, K}, m) where {N, K}
+    g = Set{NTuple{K, Int}}()
+    sizehint!(g, m)
+    while length(g) < m
+        push!(g, rand(s))
+    end
+    g
+end
+
+function make_figure_0()
+    # 40s at trials = 101
+    n = 35
+    k = 3
+    pts = 50
+    trials = 301
+    fs, target = unzip(shuffle!(repeat(vec(collect(Iterators.product(1:4,
+        round.(Integer, LinRange(0,n^k-1,pts+1)[2:end]#=10 .^ LinRange(1, log10(n^k-1), pts)=#)))), trials)))
+    function F(f, m)
+        f > 3 && m / n^k > .95 && return NaN
+        if f == 1
+            @elapsed ER.coin_flip(n, k, m)
+        elseif f == 2
+            @elapsed ER.grass_hop(n, k, m)
+        elseif f == 3
+            @elapsed rand(ER_sampler(n, k), m)
+        elseif f == 4
+            @elapsed fbd_with_duplicate_removal(ER_sampler(n, k), m)
+        end
+    end
+
+    @time times = F.(fs, target)
+
+    I = middles(times, target, fs)
+    sort!(I, by=i->target[i])
+    p = plot(target[I]./n^k, times[I]./target[I]./k, group=string.(fs[I]);
+        ylims = (0,5e-8),
+        yformatter = t -> L"\large\bf%$(round(Integer,t*1e9))",
+        xticks = (0:.2:1, [L"\large\bf %$t" for t in 0:.2:1]),
+        bottom_margin=10Plots.px,
+        right_margin=10Plots.px,
+        legend=(.2,.93),
+        fontfamily = "times",
+        tickfontsize = 12,
+        legendfontsize = 10,
+        ylabel = L"\textrm{\large\bf runtime (ns) / hypergraph size}",
+        xlabel = L"\textrm{\large\bf hyperedges / possible hyperedges}",
+        labels = [L"\textrm{\bf Coin Flipping}" L"\textrm{\bf Grass Hopping}" L"\textrm{\bf FBD}" L"\textrm{\bf FBD with duplicate removal}"],
+        )
+    savefig(joinpath(dirname(@__DIR__), "figures", "er.pdf"))
+    p
 end

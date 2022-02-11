@@ -16,8 +16,8 @@ function approx_n_unique(f, n, domain)
 end
 
 function trial(n, k, m)
-    ((@elapsed coin_flip_er(n, k, m)),
-    (@elapsed grass_hop_er(n, k, m)),
+    ((@elapsed ER.coin_flip(n, k, m)),
+    (@elapsed ER.grass_hop(n, k, m)),
     (@elapsed rand(ER_sampler(n, k), m)),
     #(@elapsed (s = ER_sampler(n, k); approx_n_unique(()->rand(s), m, n^k))),
     (@elapsed (s = ER_sampler(n, k); n_unique(()->rand(s), m))))
@@ -53,10 +53,10 @@ function plt(n, k, points, trials)
     x, ys = data2(n, k, points, trials)#zip(d...)
     p = plot(title = "runtime of various methods at various densities of\nER model with $n nodes, k*=$k\nmedian time of $trials trials",
         ylabel = "Runtime (ns) per edge",
-        xlabel = "edges",
+        xlabel = "edges (% of possible edges)",
         legend=:top,
         xaxis=:log,
-        xformatter = xi -> "10^$(Int(log10(xi))) / $(100*xi/n^k)%",
+        xformatter = xi -> "10^$(Int(log10(xi))) ($(100*xi/n^k))%",
         xticks=10 .^ (1:log10(n^k)))
     labels = ["Coin Flip", "Grasshop", "Functional Ball Drop",
     #"FBD with duplicate removal",

@@ -8,10 +8,10 @@ function linear_density(d_n::Tuple{AbstractDict{<:Integer, <:AbstractDict}, Unit
     edge_count/possible_edges
 end
 function log_density(d_n::Tuple{AbstractDict{<:Integer, <:AbstractDict}, UnitRange{<:Integer}})
-    d = d_n[1]
-    edge_count = sum([sum(values(x)) for (k,x) in d])
+    size = hypergraphsize(d_n)
+    size == 0 && return NaN
     n = length(d_n[2])
-    log(edge_count)/log(n)
+    log(size)/log(n)
 end
 function FBD.hypergraphsize(d_n::Tuple{AbstractDict{<:Integer, <:AbstractDict}, UnitRange{<:Integer}})
     sum([k*sum(values(x)) for (k,x) in d_n[1]])
@@ -27,10 +27,10 @@ function linear_density(hedges::NTuple{3, <:AbstractVector{<:Integer}})
     edge_count/possible_edges
 end
 function log_density(hedges::NTuple{3, <:AbstractVector{<:Integer}})
-    edge_count = length(hedges[1])
-    edge_count == 0 && return NaN
+    size = hypergraphsize(hedges)
+    size == 0 && return NaN
     n = maximum(maximum.(hedges))
-    log(edge_count)/log(n)
+    log(size)/log(n)
 end
 
 # for the FBD representation
@@ -43,23 +43,8 @@ function linear_density(g::AbstractVector)
     edge_count/possible_edges
 end
 function log_density(g::AbstractVector)
-    edge_count = length(g)
-    edge_count == 0 && return NaN
+    size = hypergraphsize(g)
+    size == 0 && return NaN
     n = maximum(maximum.(g))
-    log(edge_count)/log(n)
+    log(size)/log(n)
 end
-
-#=
-
-
-# for the DCHSBM representation
-edge_count(d_n::Tuple{AbstractDict{<:Integer, <:AbstractDict}, UnitRange{<:Integer}}) =
-    sum([sum(values(x)) for (k,x) in d])
-# for the Kronecker representation
-edge_count(hedges::NTuple{3, <:AbstractVector{<:Integer}}) = length(hedges[1])
-# for the FBD representation
-edge_count(edge_count::AbstractVector) = length(edge_count)
-
-possible_edges(nodes, kmax; kmin=1) =
-    sum([binomial(nodes,k) for k in kmin:kmax])
-    =#
