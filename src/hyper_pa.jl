@@ -2,7 +2,6 @@ module HyperPA
 
 using FBD
 using BenchmarkTools
-using Juno
 
 function source()
     joinpath(@__DIR__, "hyper_pa")
@@ -46,11 +45,11 @@ end
 """
     jl_profile(name="DAWN", nodes=3029, runs=20)
 
-Profile the FBD implementation (skip disk IO) and display the results in Juno's GUI
+Repeatedly run the FBD implementation (skip disk IO). Good for profiling.
 """
 function jl_profile(name="DAWN", nodes=3029, runs=20)
     ps = params(name, nodes)
-    Juno.@profiler for i in 1:runs; graph = hyper_pa(ps...); end
+    for i in 1:runs; graph = hyper_pa(ps...); end
 end
 
 """
