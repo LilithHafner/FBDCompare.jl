@@ -6,3 +6,4 @@
 /data
 /figures
 *.DS_store
+*__pycache__/
