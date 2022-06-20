@@ -3,9 +3,6 @@ module HyperPA
 using FBD
 using BenchmarkTools
 
-function source()
-    joinpath(@__DIR__, "hyper_pa")
-end
 function data()
     joinpath(@__DIR__, "..", "data", "hyper_pa")
 end

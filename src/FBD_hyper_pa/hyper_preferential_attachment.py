@@ -1,6 +1,8 @@
 import numpy as np
 import numpy.random as rng
 import scipy.special
+from AliasTable import parse_alias_table
+import argparse
 
 #implements https://arxiv.org/pdf/2006.07060.pdf
 #thousands of times faster than https://github.com/manhtuando97/KDD-20-Hypergraph/blob/master/Code/Generator/hyper_preferential_attachment.py
@@ -58,3 +60,34 @@ def hyper_pa(degree_distribution, edgesize_distribution, max_edgesize, nodes):
             assert len(new_edge) == new_edgesize
             edges_by_size[new_edgesize].append(new_edge)
     return edges
+
+if __name__ == "__main__":
+    # \/ Argument parsing adapted from from ../hyper_pa/hyper_preferential_attachment.py \/
+    parser = argparse.ArgumentParser(description="HyperPA arguments.")
+
+    parser.add_argument('--name', dest='name', help='name of the dataset')
+    parser.add_argument('--num_nodes', dest='nodes', type=int, help='number of nodes in the hypergraphs')
+
+    parser.add_argument('--size_distribution_directory', dest='size_distribution_directory', help='directory containing the size distribution file')
+    parser.add_argument('--simplex_per_node_directory', dest='simplex_per_node_directory', help='directory containing the distribution of hyperedges per new node')
+
+    parser.add_argument('--file_name', dest='file_name', help='name of the output file')
+    parser.add_argument('--output_directory', dest='output_directory', help='directory containing the output file')
+
+    parser.set_defaults(size_distribution_directory='size distribution',
+                        simplex_per_node_directory='simplex per node',
+                        output_directory='output')
+
+    args = parser.parse_args()
+    # /\ Argument parsing adapted from from ../hyper_pa/hyper_preferential_attachment.py /\
+
+    degree_distribution = parse_alias_table(args.simplex_per_node_directory + "/" + args.name + "-simplices-per-node-distribution.txt")
+    edgesize_distribution = parse_alias_table(args.size_distribution_directory + "/" + args.name + " size distribution.txt")
+    max_edgesize = max(edgesize_distribution.values)
+    nodes = args.nodes
+
+    output = hyper_pa(degree_distribution, edgesize_distribution, max_edgesize, nodes)
+
+    with open(args.output_directory + "/" + args.file_name + ".txt", "w") as f:
+        for edge in output:
+            f.write(" ".join(str(node) for node in edge) + "\n")

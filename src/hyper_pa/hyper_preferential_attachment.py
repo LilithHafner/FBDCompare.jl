@@ -98,7 +98,8 @@ class hyper_preferential_attachment:
         distribution = [0] * (count + 1)
         g.close()
 
-        g = open("simplex per node/" + self.name + "-simplices-per-node-distribution.txt", "r")
+        # the following line has been edited to include a bug-fix:
+        g = open(self.simplex_per_node_directory + "/" + self.name + "-simplices-per-node-distribution.txt", "r")
 
         index = 0
         for line in g:

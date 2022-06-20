@@ -106,11 +106,14 @@ end
 function make_figure_3()
     fs, target = unzip(shuffle!(vcat(
         (scale >= 2 ? [(new_hyperpa, 8.25)] : []),
+        (scale >= 2 ? [(new_hyperpa_python, 8.25)] : []),
         [(new_hyperpa, t) for t in 10 .^ (2:.5:6.5+scale)],
+        [(new_hyperpa_python, t) for t in 10 .^ (2:.5:6.5+scale)],
         (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:1)] : []),
         repeat(vcat(
         (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:.5)] : []),
-        [(new_hyperpa, t) for t in 10 .^ (2:.5:5.5+scale)]), 10),
+        [(new_hyperpa, t) for t in 10 .^ (2:.5:5.5+scale)],
+        [(new_hyperpa_python, t) for t in 10 .^ (2:.5:5.5+scale)]), 10),
         repeat(
         [(new_hyperpa, t) for t in 10 .^ (2:.5:3+scale/2)], 1000))))
 
@@ -125,9 +128,10 @@ function make_figure_3()
 
     I = middles(times, target, fs)
 
-    scatter(sizes[I], times[I], group=string.(fs[I]); first_row...,
+    scatter(sizes[I], times[I], group=[x == new_hyperpa ? 1 : x == old_hyperpa ? 2 : 3 for x in fs[I]];
+        first_row...,
         ylabel = L"\textrm{\large\bf runtime (s)}",
-        labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf TYHS}"],
+        labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf TYHS}" L"\textrm{\large\bf FBD (Python)}"],
         xticks = (10.0 .^ (2:8), [L"\large\bf 10^{%$i}" for i in 2:8]),
         yticks = (10.0 .^ ((-4.0):5.0), [L"\large\bf 10^{%$i}" for i in -4:5]),)
 end
