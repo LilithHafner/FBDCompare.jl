@@ -41,7 +41,7 @@ def parse_alias_table(filename):
     values = []
     weights = []
     for i, line in enumerate(open(filename)):
-        if line == "0" or line == "":
+        if line == "0\n" or line == "\n":
             continue
         values.append(i+1)
         weights.append(int(line))
