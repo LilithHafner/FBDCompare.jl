@@ -1,4 +1,5 @@
 # entire file copied from https://www.cs.purdue.edu/homes/dgleich/codes/hyperkron/hyperkron.jl
+# top-level @show and @time calls commented out
 """
 authors:
 David F. Gleich
@@ -74,11 +75,11 @@ function _all_regions(a::AbstractArray,k::Integer)
   return rval
 end
 
-@show R =_all_regions([0.99,0.5,0.5,0.2],3)
-@show typeof(R)
-@time _all_regions([0.99,0.5,0.5,0.2],3)
-@time _all_regions([0.99,0.5,0.5,0.2],4)
-@time _all_regions([0.99,0.5,0.5,0.2],5)
+#@show R =_all_regions([0.99,0.5,0.5,0.2],3)
+#@show typeof(R)
+#@time _all_regions([0.99,0.5,0.5,0.2],3)
+#@time _all_regions([0.99,0.5,0.5,0.2],4)
+#@time _all_regions([0.99,0.5,0.5,0.2],5)
 
 
 
@@ -251,7 +252,7 @@ unrank5!(ms, n) = unrank5!(ms, n, num_multiset_permutations(ms), length(ms))
   end
   return d2, d1
 end
-@show mydivmod(5,2), divrem(5,2)
+#@show mydivmod(5,2), divrem(5,2)
 
 
 
@@ -270,7 +271,7 @@ end
   end
   return (row+1, col+1, tub+1)
 end
-@show _morton_decode3([8,8,8,8],2,(2,2,2))
+#@show _morton_decode3([8,8,8,8],2,(2,2,2))
 #@time _morton_decode([4,4,4,4],2)
 
 
