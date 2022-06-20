@@ -7,3 +7,4 @@
 /figures
 *.DS_store
 *__pycache__/
+data_*.txt
