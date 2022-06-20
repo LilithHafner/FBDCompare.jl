@@ -134,9 +134,10 @@ end
 
 function make_figure_4()
     #12 seconds at trials=1
+    trials = min(15, 5^scale)
     fs, target = unzip(shuffle!(repeat(vcat(
-        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in vcat([3e-21, 1.5e-19], 10 .^ ((-17:1:1).+4 .- LinRange(-√4,√4,19).^2))],
-        [((x,y) -> old_dchsbm(x,y,kmax=10), t) for t in 9:.5:15]), 15)))
+        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in vcat([6e-21, 3e-18], 10 .^ ((-17:1:1).+4 .- LinRange(-√4,√4,19).^2)[2:end])],
+        [((x,y) -> old_dchsbm(x,y,kmax=10), t) for t in 9:.5:15]), trials)))
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
