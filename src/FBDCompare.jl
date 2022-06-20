@@ -2,7 +2,7 @@ module FBDCompare
 
 using FBD
 
-export ER, Kronecker, DCHSBM, HyperPA
+export ER, Kronecker, DCHSBM, HyperPA, save_figures
 
 include("er.jl")
 
