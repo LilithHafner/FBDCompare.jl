@@ -2,6 +2,7 @@ import numpy as np
 import numpy.random as rng
 import random as rng2
 import scipy.special
+from bisect import bisect_left
 from AliasTable import parse_alias_table
 import argparse
 
@@ -39,9 +40,7 @@ def hyper_pa(degree_distribution, edgesize_distribution, max_edgesize, nodes):
                     new_edge[1:] = rng.choice(range(1,n), new_edgesize-1, replace=False)
                 else:
                     key = rng2.randint(1,total)
-                    source_edgesize = new_edgesize-1
-                    while cum_sum[source_edgesize] < key:
-                        source_edgesize += 1
+                    source_edgesize = bisect_left(cum_sum[new_edgesize-1:], key)+new_edgesize-1
 
                     #Huzzah! we have a source edgesize!
 
