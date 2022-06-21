@@ -109,7 +109,8 @@ function make_figure_3()
         (scale >= 2 ? [(new_hyperpa_python, 8.25)] : []),
         [(new_hyperpa, t) for t in 10 .^ (2:.5:6.5+scale)],
         [(new_hyperpa_python, t) for t in 10 .^ (2:.5:6.5+scale)],
-        (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:1)] : []),
+        (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (.75:.25:1)] : []),
+        (scale >= 1 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:.5)] : []),
         repeat(vcat(
         (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:.5)] : []),
         [(new_hyperpa, t) for t in 10 .^ (2:.5:5.5+scale)],
