@@ -14,10 +14,10 @@ def hyper_pa(degree_distribution, edgesize_distribution, max_edgesize, nodes):
 
     cum_sum_source = np.zeros(max_edgesize, dtype=np.int64)
 
-    binomial_table = np.zeros((max_edgesize+1,max_edgesize), dtype=np.int64)
-    for a in range(max_edgesize+1):
-        for b in range(max_edgesize):
-            binomial_table[a,b] = scipy.special.binom(a, b)
+    # binomial_table = np.zeros((max_edgesize+1,max_edgesize), dtype=np.int64)
+    # for a in range(max_edgesize+1):
+    #     for b in range(max_edgesize):
+    #         binomial_table[a,b] = scipy.special.binom(a, b)
 
     for n in range(edges[-1][-1]+1,nodes+1):
         for _ in range(degree_distribution.sample()):
@@ -25,15 +25,15 @@ def hyper_pa(degree_distribution, edgesize_distribution, max_edgesize, nodes):
             new_edge = [n]*new_edgesize
 
             if new_edgesize > 1:
-                #binom = 1
+                binom = 1
                 acc = 0
                 cum_sum = cum_sum_source[new_edgesize-2:max_edgesize-1] #13%
                 for extra in range(len(cum_sum)):
                     source_edgesize = new_edgesize-1+extra
-                    binom = binomial_table[source_edgesize,new_edgesize-1]
+                    # binom = binomial_table[source_edgesize,new_edgesize-1]
                     acc += len(edges_by_size[source_edgesize])*binom
                     cum_sum[extra] = acc
-                    #binom = binom*(source_edgesize+1)//(source_edgesize-new_edgesize+2)
+                    binom = binom*(source_edgesize+1)//(source_edgesize-new_edgesize+2)
                 total = cum_sum[-1]
                 if total == 0:
                     new_edge[1:] = rng.choice(range(1,n), new_edgesize-1, replace=False)
