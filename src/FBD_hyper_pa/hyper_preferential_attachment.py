@@ -50,10 +50,10 @@ def hyper_pa(degree_distribution, edgesize_distribution, max_edgesize, nodes):
 
                     #Huzzah! and a specific source edge
 
-                    # This sampling takes ~38% of runtime. ~20% of that (~7.5% total) can be
-                    # alleviated by passing a workspace vector through. StatsBase doesn't
-                    # support that, though.
-                    new_edge[1:] = rng.choice(source_edge, new_edgesize-1, replace=False)
+                    # We represent edges as sets. The order returned is arbitrary, so it is
+                    # okay to partially shuffle here:
+                    rng.shuffle(source_edge)
+                    new_edge[1:] = source_edge[:new_edgesize-1]
 
                     #Huzzah! and an actual edge to use
             edges.append(new_edge)
