@@ -104,6 +104,7 @@ function make_figure_2()
 end
 
 function make_figure_3()
+    # 32,000s at scale = 2
     fs, target = unzip(shuffle!(vcat(
         (scale >= 2 ? [(new_hyperpa, 8.25)] : []),
         (scale >= 2 ? [(new_hyperpa_python, 8.25)] : []),
@@ -132,7 +133,7 @@ function make_figure_3()
     scatter(sizes[I], times[I], group=[x == new_hyperpa ? 1 : x == old_hyperpa ? 2 : 3 for x in fs[I]];
         first_row...,
         ylabel = L"\textrm{\large\bf runtime (s)}",
-        labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf TYHS}" L"\textrm{\large\bf FBD (Python)}"],
+        labels = [L"\textrm{\bf FBD}" L"\textrm{\bf TYHS}" L"\textrm{\bf FBD (Python)}"],
         xticks = (10.0 .^ (2:8), [L"\large\bf 10^{%$i}" for i in 2:8]),
         yticks = (10.0 .^ ((-4.0):5.0), [L"\large\bf 10^{%$i}" for i in -4:5]),)
 end
