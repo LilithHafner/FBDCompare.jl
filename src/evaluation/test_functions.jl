@@ -21,11 +21,12 @@ function old_dchsbm(size::Real, density=1/40; kmax::Int64=3)
     sampleEdges(Z, ϑ, Ω;α=α, kmax=kmax, kmin = 1) # modified to skip computing degrees
     #end copied from https://github.com/nveldt/HyperModularity.jl/blob/0478acb5e209550cbaf7572f4151c4569f64faf6/test/runtests.jl#L20
 end
-function new_dchsbm(size::Real, density=1/40; kmax::Int64=3)
-    #modeled after old_dchsbm
-    density_modifier = density*40
-    n = round(Integer, 4*(size/density_modifier)^(1/kmax))
+new_dchsbm(size::Real; kmax::Int64=3) = _new_dchsbm(size, 4*size^(1/kmax), kmax)
+new_dchsbm(size::Real, density; kmax::Int64=3) = _new_dchsbm(size, size^(1/density), kmax)
+function _new_dchsbm(size, nf, kmax)
+    n = round(Integer, nf)
 
+    #modeled after old_dchsbm
     Z = rand(1:5, n)
     ϑ = rand(n) .+ 1
 

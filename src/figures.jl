@@ -139,10 +139,10 @@ function make_figure_3()
 end
 
 function make_figure_4()
-    #12 seconds at trials=1
+    #225 seconds at trials=15
     trials = min(15, 5^scale)
     fs, target = unzip(shuffle!(repeat(vcat(
-        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in vcat([6e-21, 3e-18], 10 .^ ((-17:1:1).+4 .- LinRange(-√4,√4,19).^2)[2:end])],
+        [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in LinRange(1.2, 6, 20)],
         [((x,y) -> old_dchsbm(x,y,kmax=10), t) for t in 9:.5:15]), trials)))
 
     if COMPUTE[]
@@ -158,7 +158,7 @@ function make_figure_4()
     scatter(densities[I], times[I]./sizes[I], group=string.(fs[I]);
         yaxis = :log,
         yticks = (10.0 .^ (-8:-4), [L"\large\bf 10^{%$i}" for i in -8:-4]),
-        xticks = (2:6, [L"\large\bf %$x" for x in 2:6]),
+        xticks = (1:6, [L"\large\bf %$x" for x in 1:6]),
         bottom_margin = 10Plots.px,
         fontfamily = "times",
         guidefontsize = 14,
@@ -167,16 +167,16 @@ function make_figure_4()
         legend=:topleft,
         ylabel = L"\textrm{\large\bf runtime (s) / hypergraph size      ..}",
         xlabel = L"\textrm{\large\bf log(hypergraph size) / log(nodes)}",
-        xlims = (2,6),
+        xlims = (1,6.02),
         labels = [L"\textrm{\large\bf FBD}" L"\textrm{\large\bf CVB}"],
         #grid = false,
         #markerstrokewidth = 0,
         markersize = 7)
 end
 function make_figure_5()
-    # 1 hour? at trials=11
+    # 1 hour at trials=11
     fs, target = unzip(shuffle!(repeat(vcat(
-        [(new_dchsbm, t) for t in vcat([1e-11], 10 .^ ((-10:.5:1).+2 .- LinRange(-√2,√2,23).^2))],
+        [(new_dchsbm, t) for t in LinRange(1.1, 3, 20)],
         [(old_dchsbm, t) for t in 10 .^ (-1.4:.2:1)]), 11)))
 
     if COMPUTE[]
@@ -193,7 +193,7 @@ function make_figure_5()
         yaxis = :log,
         yticks = (10.0 .^ (-7:-5), [L"\large\bf 10^{%$i}" for i in -7:-5]),
         xticks = (1:.5:3, [L"\large\bf %$x" for x in 1:.5:3]),
-        xlims = (1,3),
+        xlims = (1,3.025),
         bottom_margin=10Plots.px,
         right_margin=10Plots.px,
         fontfamily = "times",
