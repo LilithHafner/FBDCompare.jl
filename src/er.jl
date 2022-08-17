@@ -20,6 +20,23 @@ function coin_flip_kernal(iter, rng, p, out)
     out
 end
 
+function coin_flip_with_duplicates(n, k, m, rng=GLOBAL_RNG)
+    size = n^k
+    d = Geometric(1/(1+m/size))
+    out = NTuple{k, Int}[]
+    sizehint!(out, m+ceil(Integer,sqrt(m)))
+    coin_flip_kernal_with_duplicates(Iterators.product([1:n for _ in 1:k]...), rng, d, out)
+    out
+end
+function coin_flip_kernal_with_duplicates(iter, rng, d, out)
+    for i in iter
+        for _ in 1:rand(rng, d)
+            push!(out, i)
+        end
+    end
+    out
+end
+
 function grass_hop(n, k, m, rng=GLOBAL_RNG)
     size = n^k
     p = m/size

@@ -288,11 +288,12 @@ end
 
 
 ## The figure at the beginning of the paper
-function fbd_with_duplicate_removal(s::FBD.ER_sampler{N, K}, m) where {N, K}
+fbd_with_duplicate_removal(n, m, k) = fbd_with_duplicate_removal(n, m, Val(k))
+function fbd_with_duplicate_removal(n, m, k::Val{K}) where K
     g = Set{NTuple{K, Int}}()
     sizehint!(g, m)
     while length(g) < m
-        push!(g, rand(s))
+        push!(g, ntuple(_ -> rand(1:n), k))
     end
     g
 end
@@ -303,18 +304,20 @@ function make_figure_0()
     k = 3
     pts = 50
     trials = 301
-    fs, target = unzip(shuffle!(repeat(vec(collect(Iterators.product(1:4,
+    fs, target = unzip(shuffle!(repeat(vec(collect(Iterators.product(1:5,
         round.(Integer, LinRange(0,n^k-1,pts+1)[2:end]#=10 .^ LinRange(1, log10(n^k-1), pts)=#)))), trials)))
     function F(f, m)
-        f > 3 && m / n^k > .95 && return NaN
+        f == 4 && m / n^k > .97 && return NaN
         if f == 1
-            @elapsed ER.coin_flip(n, k, m)
+            @elapsed ER.coin_flip_with_duplicates(n, k, m)
         elseif f == 2
-            @elapsed ER.grass_hop(n, k, m)
+            @elapsed ER.coin_flip(n, k, m)
         elseif f == 3
-            @elapsed rand(ER_sampler(n, k), m)
+            @elapsed ER.grass_hop(n, k, m)
         elseif f == 4
-            @elapsed fbd_with_duplicate_removal(ER_sampler(n, k), m)
+            @elapsed fbd_with_duplicate_removal(n, m, k)
+        elseif f == 5
+            @elapsed er(n, m, k)
         end
     end
 
@@ -328,13 +331,17 @@ function make_figure_0()
         xticks = (0:.2:1, [L"\large\bf %$t" for t in 0:.2:1]),
         bottom_margin=10Plots.px,
         right_margin=10Plots.px,
-        legend=(.2,.93),
+        legend=(.16,.96),
         fontfamily = "times",
         tickfontsize = 12,
         legendfontsize = 10,
         ylabel = L"\textrm{\large\bf runtime (ns) / hypergraph size}",
-        xlabel = L"\textrm{\large\bf hyperedges / possible hyperedges}",
-        labels = [L"\textrm{\bf Coin Flipping}" L"\textrm{\bf Grass Hopping}" L"\textrm{\bf FBD}" L"\textrm{\bf FBD with duplicate removal}"],
+        xlabel = L"\textrm{\large\bf edges / possible edges}",
+        labels = [L"\textrm{\bf Coin Flipping with added duplicate support}" L"\textrm{\bf Coin Flipping}" L"\textrm{\bf Grass Hopping}" L"\textrm{\bf FBD with added duplicate removal}" L"\textrm{\bf FBD}"],
+        color = [1 1 3 2 2],
+        linestyle = [:dash :solid :solid :dash :solid],
+        background_color_legend = nothing,#RGBA(1,1,1,.5),
+        foreground_color_legend = nothing
         )
     savefig(joinpath(dirname(@__DIR__), "figures", "er.pdf"))
     p
