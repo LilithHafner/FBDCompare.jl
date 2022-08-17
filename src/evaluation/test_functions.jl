@@ -102,5 +102,3 @@ end
 function new_hyperpa(size::Integer=45000)
     example(hyper_pa, size)
 end
-
-test_functions = [(old_dchsbm, new_dchsbm), (old_kronecker, new_kronecker), (old_hyperpa, new_hyperpa)]
