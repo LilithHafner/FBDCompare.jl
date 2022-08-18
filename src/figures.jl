@@ -53,7 +53,8 @@ first_row = (
     )
 
 function make_figure_1()
-    #500s at scale = 2
+    # 9s at scale = 0
+    # 500s at scale = 2
     fs, target = unzip(shuffle!(vcat(
         [(new_dchsbm, t) for t in 10 .^ (1:.5:7.5+scale)],
         [(old_dchsbm, t) for t in 10 .^ (1:.5:4.5+scale)],
@@ -78,6 +79,7 @@ function make_figure_1()
         yticks = (10.0 .^ ((-5.0):5.0), [L"\large\bf 10^{%$i}" for i in -5:5]),)
 end
 function make_figure_2()
+    # 15s at scale = 0
     fs, target = unzip(shuffle!(vcat(
         [(new_kronecker, t) for t in 10 .^ (1:.5:7.5+scale)],
         [(old_kronecker, t) for t in 10 .^ (1:.5:6+scale)],
@@ -104,20 +106,23 @@ function make_figure_2()
 end
 
 function make_figure_3()
+    # 20s at scale = 0 (no old_hyperpa data points)
     # 32,000s at scale = 2
     fs, target = unzip(shuffle!(vcat(
         (scale >= 2 ? [(new_hyperpa, 8.25)] : []),
         (scale >= 2 ? [(new_hyperpa_python, 8.25)] : []),
         [(new_hyperpa, t) for t in 10 .^ (2:.5:6.5+scale)],
-        [(new_hyperpa_python, t) for t in 10 .^ (2:.5:6.5+scale)],
+        [(new_hyperpa_python, t) for t in 10 .^ (2:.5:5.5+1.5scale)],
         (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (.75:.25:1)] : []),
         (scale >= 1 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:.5)] : []),
         repeat(vcat(
         (scale >= 2 ? [(old_hyperpa, t) for t in 45000*10 .^ (0:.25:.5)] : []),
         [(new_hyperpa, t) for t in 10 .^ (2:.5:5.5+scale)],
-        [(new_hyperpa_python, t) for t in 10 .^ (2:.5:5.5+scale)]), 10),
+        [(new_hyperpa_python, t) for t in 10 .^ (2:.5:3.5+2scale)]), 10),
         repeat(
         [(new_hyperpa, t) for t in 10 .^ (2:.5:3+scale/2)], 1000))))
+
+    any_old = any(fs .== old_hyperpa)
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, target))
@@ -133,13 +138,14 @@ function make_figure_3()
     scatter(sizes[I], times[I], group=[x == new_hyperpa ? 1 : x == old_hyperpa ? 2 : 3 for x in fs[I]];
         first_row...,
         ylabel = L"\textrm{\large\bf runtime (s)}",
-        labels = [L"\textrm{\bf FBD}" L"\textrm{\bf TYHS}" L"\textrm{\bf FBD (Python)}"],
+        labels = any_old ? [L"\textrm{\bf FBD}" L"\textrm{\bf TYHS}" L"\textrm{\bf FBD (Python)}"] : [L"\textrm{\bf FBD}" L"\textrm{\bf FBD (Python)}"],
         xticks = (10.0 .^ (2:8), [L"\large\bf 10^{%$i}" for i in 2:8]),
         yticks = (10.0 .^ ((-4.0):5.0), [L"\large\bf 10^{%$i}" for i in -4:5]),)
 end
 
 function make_figure_4()
-    #225 seconds at trials=15
+    # 17s at scale = 0
+    # 225 seconds at scale = 2
     trials = min(15, 5^scale)
     fs, target = unzip(shuffle!(repeat(vcat(
         [((x,y) -> new_dchsbm(x,y,kmax=10), t) for t in LinRange(1.2, 6, 20)],
@@ -174,10 +180,12 @@ function make_figure_4()
         markersize = 7)
 end
 function make_figure_5()
-    # 1 hour at trials=11
+    # 32s at scale = 0
+    # 1 hour at scale = 2
+    trials = min(11, 5^scale)
     fs, target = unzip(shuffle!(repeat(vcat(
         [(new_dchsbm, t) for t in LinRange(1.1, 3, 20)],
-        [(old_dchsbm, t) for t in 10 .^ (-1.4:.2:1)]), 11)))
+        [(old_dchsbm, t) for t in 10 .^ (-.2-.6scale:.2:.2)]), trials)))
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
@@ -210,10 +218,12 @@ function make_figure_5()
 end
 
 function make_figure_6()
-    # 16m at trials = 15
+    # 15s at scale = 0
+    # 16m at scale = 2
+    trials = min(15, 5^scale)
     fs, target = unzip(shuffle!(repeat(vcat(
         [(new_kronecker, t) for t in [1e-49, 1e-45, 1e-40, 1e-37, 1e-30, 1e-24, 1e-20, 1e-14, 1e-13, 1e-9, 1e-7, 3e-4, 3e-2, 3e3] * 1e-4],
-        [(old_kronecker, t) for t in [1e-13, 1e-11, 1e-9, 5e-8, 2e-6, 4e-5, 1e-3, 1e-2, 1e-1, .5, 1, 10, 100]]), 15)))
+        [(old_kronecker, t) for t in [1e-13, 1e-11, 1e-9, 5e-8, 2e-6, 4e-5, 1e-3, 1e-2, 1e-1, .5, 1, 10, 100][begin+6-3scale:end]]), trials)))
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, 10^7, target))
@@ -299,11 +309,12 @@ function fbd_with_duplicate_removal(n, m, k::Val{K}) where K
 end
 
 function make_figure_0()
-    # 40s at trials = 101
+    # 2s at scale = 0
+    # 170s at scale = 2
     n = 35
     k = 3
-    pts = 50
-    trials = 301
+    pts = [20, 35, 50][scale+1]
+    trials = [11, 51, 301][scale+1]
     fs, target = unzip(shuffle!(repeat(vec(collect(Iterators.product(1:5,
         round.(Integer, LinRange(0,n^k-1,pts+1)[2:end]#=10 .^ LinRange(1, log10(n^k-1), pts)=#)))), trials)))
     function F(f, m)
