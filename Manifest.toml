@@ -166,7 +166,7 @@ version = "0.1.1"
 
 [[FBD]]
 deps = ["Combinatorics", "Distributions", "OffsetArrays", "Random", "SpecialFunctions", "StaticArrays", "StatsBase"]
-git-tree-sha1 = "e3b4c8eca746eb84def3f913843e1597631586aa"
+git-tree-sha1 = "761d33d2c26675f1ce80596242218358d3dfd7ce"
 repo-rev = "main"
 repo-url = "https://github.com/LilithHafner/FBD.jl"
 uuid = "86f54e4b-c326-4f4b-ad74-639fc688eb37"
@@ -712,9 +712,9 @@ version = "2.1.7"
 
 [[StaticArrays]]
 deps = ["LinearAlgebra", "Random", "StaticArraysCore", "Statistics"]
-git-tree-sha1 = "8803c6dea034ab8cd988abe4a91e5589d61c7416"
+git-tree-sha1 = "85bc4b051546db130aeb1e8a696f1da6d4497200"
 uuid = "90137ffa-7385-5640-81b9-e52037218182"
-version = "1.5.4"
+version = "1.5.5"
 
 [[StaticArraysCore]]
 git-tree-sha1 = "5b413a57dd3cea38497d745ce088ac8592fbb5be"
@@ -785,9 +785,9 @@ uuid = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
 [[TranscodingStreams]]
 deps = ["Random", "Test"]
-git-tree-sha1 = "216b95ea110b5972db65aa90f88d8d89dcb8851c"
+git-tree-sha1 = "4ad90ab2bbfdddcae329cba59dab4a8cdfac3832"
 uuid = "3bb67fe8-82b1-5028-8e26-92a6c54297fa"
-version = "0.9.6"
+version = "0.9.7"
 
 [[URIs]]
 git-tree-sha1 = "e59ecc5a41b000fa94423a578d29290c7266fc10"
