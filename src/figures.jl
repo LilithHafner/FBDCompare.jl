@@ -123,6 +123,7 @@ function make_figure_3()
         [(new_hyperpa, t) for t in 10 .^ (2:.5:3+SCALE[]/2)], 1000))))
 
     any_old = any(fs .== old_hyperpa)
+    @show any_old
 
     if COMPUTE[]
         @time sizes, times, densities = unzip(datapoint.(fs, target))
