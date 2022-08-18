@@ -22,6 +22,8 @@ end
     @test FBDCompare.hypergraphsize((Dict{Int64, Dict}(4 => Dict{Vector{Int64}, Int64}(), 2 => Dict([2, 4] => 1, [2, 6] => 1, [7, 7] => 1), 3 => Dict([5, 6, 6] => 1, [6, 6, 6] => 1), 1 => Dict([3] => 1, [7] => 1)), 1:7)) == 14
 end
 
-#=@testset "end to end" begin
-    FBDCompare.save_figures()
-end=#
+@testset "end to end" begin
+    FBDCompare.SCALE[] = 0
+    FBDCompare.make_figure_0()
+    FBDCompare.save_figures() # figures 1-6
+end
