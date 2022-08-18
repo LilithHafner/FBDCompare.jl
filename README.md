@@ -10,5 +10,7 @@ Exmple usage
 
 using FBD, FBDCompare
 
+FBDCompare.SCALE[] = 0 # Use fewer, smaller trials for faster results
+
 FBDCompare.save_figures()
 ```
