@@ -7,3 +7,6 @@
 *.DS_store
 *__pycache__/
 data_*.txt
+/src/data/
+/test/gr-temp/
+/gr-temp/
