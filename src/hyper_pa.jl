@@ -6,6 +6,9 @@ using BenchmarkTools
 function data()
     joinpath(@__DIR__, "..", "data", "hyper_pa")
 end
+function source()
+    joinpath(@__DIR__, "hyper_pa")
+end
 
 function params(name, nodes)
     edgesize_distribution = FBD.read_probabilities(joinpath(source(), "size distribution", name * " size distribution.txt"))
