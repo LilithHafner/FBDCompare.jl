@@ -1,7 +1,6 @@
 module HyperPA
 
 using FBD
-using BenchmarkTools
 
 function data()
     joinpath(@__DIR__, "..", "data", "hyper_pa")
@@ -31,25 +30,17 @@ function jl_with_io(name="DAWN", nodes=3029)
 end
 
 """
-    jl_benchmark(name="DAWN", nodes=3029)
+    jl_without_io(name="DAWN", nodes=3029; runs=1)
 
-Benchmark the FBD implementation (skip disk IO) and return runtime in seconds
+Run FBD implementation (skip disk IO) and return the generated graph.
+
+Pass runs = n to run the algorithm n times for profiling
 """
-function jl_benchmark(name="DAWN", nodes=3029)
+function jl_without_io(name="DAWN", nodes=3029; runs=1)
     ps = params(name, nodes)
-    m = @benchmark graph = hyper_pa($ps...)
-    display(m)
-    time(median(m))/1e9
-end
-
-"""
-    jl_profile(name="DAWN", nodes=3029, runs=20)
-
-Repeatedly run the FBD implementation (skip disk IO). Good for profiling.
-"""
-function jl_profile(name="DAWN", nodes=3029, runs=20)
-    ps = params(name, nodes)
-    for i in 1:runs; graph = hyper_pa(ps...); end
+    graph = hyper_pa(ps...)
+    for i in 2:runs; graph = hyper_pa(ps...); end
+    graph
 end
 
 """

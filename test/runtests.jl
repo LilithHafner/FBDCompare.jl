@@ -7,8 +7,7 @@ using Test
 ci = ("CI"=>"true") ∈ ENV
 
 @testset "HyperPA" begin
-    HyperPA.jl_benchmark()
-    HyperPA.jl_profile()
+    HyperPA.jl_without_io()
     HyperPA.jl_with_io()
     if ci
         @test_broken false #=
