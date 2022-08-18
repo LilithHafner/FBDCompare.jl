@@ -258,21 +258,21 @@ end
 ## Post processing
 function save_figures()
 
-    path = joinpath(dirname(@__DIR__), "figures", "")
+    path = joinpath(dirname(@__DIR__), "figures")
     mkpath(path)
 
     COMPUTE[] && println("Saved: $(save_data())")
-    savefig(make_figure_1(), path*"dchsbm_size.pdf")
+    savefig(make_figure_1(), joinpath(path,"dchsbm_size.pdf"))
     COMPUTE[] && println("Saved: $(save_data())")
-    savefig(make_figure_2(), path*"kronecker_size.pdf")
+    savefig(make_figure_2(), joinpath(path,"kronecker_size.pdf"))
     COMPUTE[] && println("Saved: $(save_data())")
-    savefig(make_figure_3(), path*"hyperpa_size.pdf")
+    savefig(make_figure_3(), joinpath(path,"hyperpa_size.pdf"))
     COMPUTE[] && println("Saved: $(save_data())")
-    savefig(make_figure_4(), path*"dchsbm_density_k10.pdf")
+    savefig(make_figure_4(), joinpath(path,"dchsbm_density_k10.pdf"))
     COMPUTE[] && println("Saved: $(save_data())")
-    savefig(make_figure_5(), path*"dchsbm_density_k3.pdf")
+    savefig(make_figure_5(), joinpath(path,"dchsbm_density_k3.pdf"))
     COMPUTE[] && println("Saved: $(save_data())")
-    savefig(make_figure_6(), path*"kronecker_density_k3.pdf")
+    savefig(make_figure_6(), joinpath(path,"kronecker_density_k3.pdf"))
     COMPUTE[] && println("Saved: $(save_data())")
 end
 
@@ -354,6 +354,8 @@ function make_figure_0()
         background_color_legend = nothing,#RGBA(1,1,1,.5),
         foreground_color_legend = nothing
         )
-    savefig(joinpath(dirname(@__DIR__), "figures", "er.pdf"))
+    path = joinpath(dirname(@__DIR__), "figures")
+    mkpath(path)
+    savefig(joinpath(path, "er.pdf"))
     p
 end
