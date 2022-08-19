@@ -3,6 +3,10 @@ using Test
 
 ci = ("CI"=>"true") ∈ ENV
 
+if ci
+    run(`pip install numpy`)
+end
+
 @testset "HyperPA" begin
     HyperPA.jl_without_io()
     HyperPA.jl_with_io()
