@@ -1,7 +1,7 @@
 using FBDCompare
 using Test
 
-if true#("CI"=>"true") ∈ ENV # a proxy for "are we missing python dependencies?"
+if ("CI"=>"true") ∈ ENV # a proxy for "are we missing python dependencies?"
     @testset "HyperPA before install" begin
         @test FBDCompare.hypergraphsize(FBDCompare.new_hyperpa()) > 10_000
         @test FBDCompare.new_hyperpa_python() == [[1]] # Does not blow up,
