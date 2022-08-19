@@ -5,10 +5,10 @@
 
 Exmple usage
 ```jl
-]add https://github.com/LilithHafner/FBD.jl
+]add https://github.com/LilithHafner/FunctionalBallDropping.jl
 ]add https://github.com/LilithHafner/FBDCompare.jl
 
-using FBD, FBDCompare
+using FunctionalBallDropping, FBDCompare
 
 save_figures()
 ```

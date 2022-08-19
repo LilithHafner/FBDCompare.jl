@@ -1,6 +1,6 @@
 module HyperPA
 
-using FBD
+using FunctionalBallDropping
 
 function data()
     joinpath(@__DIR__, "..", "data", "hyper_pa")
@@ -10,8 +10,8 @@ function source()
 end
 
 function params(name, nodes)
-    edgesize_distribution = FBD.read_probabilities(joinpath(source(), "size distribution", name * " size distribution.txt"))
-    degree_distribution = FBD.read_probabilities(joinpath(source(), "simplex per node", name * "-simplices-per-node-distribution.txt"))
+    edgesize_distribution = FunctionalBallDropping.read_probabilities(joinpath(source(), "size distribution", name * " size distribution.txt"))
+    degree_distribution = FunctionalBallDropping.read_probabilities(joinpath(source(), "simplex per node", name * "-simplices-per-node-distribution.txt"))
     max_edgesize = findlast(edgesize_distribution.accept .> 0)
     degree_distribution, edgesize_distribution, max_edgesize, nodes
 end
@@ -25,7 +25,7 @@ and return it.
 function jl_with_io(name="DAWN", nodes=3029)
     ps = params(name, nodes)
     graph = hyper_pa(ps...)
-    FBD.write_graph(joinpath(data(), "julia", name * ".txt"), graph)
+    FunctionalBallDropping.write_graph(joinpath(data(), "julia", name * ".txt"), graph)
     graph
 end
 

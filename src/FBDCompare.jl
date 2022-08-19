@@ -1,6 +1,6 @@
 module FBDCompare
 
-using FBD
+using FunctionalBallDropping
 
 export ER, Kronecker, DCHSBM, HyperPA, save_figures
 

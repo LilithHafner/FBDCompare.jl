@@ -30,7 +30,7 @@ function _new_dchsbm(size, nf, kmax)
     Z = rand(1:5, n)
     ϑ = rand(n) .+ 1
 
-    Ω = FBD.inverse_power_intensity_function(8)
+    Ω = FunctionalBallDropping.inverse_power_intensity_function(8)
 
     sampler = DCHSBM_sampler(Ω, Z, ϑ, kmax)
 

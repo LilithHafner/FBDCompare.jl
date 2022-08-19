@@ -13,7 +13,7 @@ function log_density(d_n::Tuple{AbstractDict{<:Integer, <:AbstractDict}, UnitRan
     n = length(d_n[2])
     log(size)/log(n)
 end
-function FBD.hypergraphsize(d_n::Tuple{AbstractDict{<:Integer, <:AbstractDict}, UnitRange{<:Integer}})
+function FunctionalBallDropping.hypergraphsize(d_n::Tuple{AbstractDict{<:Integer, <:AbstractDict}, UnitRange{<:Integer}})
     sum([k*sum(values(x)) for (k,x) in d_n[1]])
 end
 
