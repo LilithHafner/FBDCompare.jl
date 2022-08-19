@@ -61,4 +61,28 @@ function grass_hop(n, k, m, rng=GLOBAL_RNG)
     end
 end
 
+function grass_hop_with_duplicates(n, k, m, rng=GLOBAL_RNG)
+    size = n^k
+    p = m/(size+m)
+    out = Vector{Int}[]
+    sizehint!(out, m+ceil(Integer,sqrt(m)))
+    d = Geometric(p)
+    i = ones(Int, k)
+    i[1] = 0
+    while true
+        skip = rand(rng, d)
+        j = 1
+        while skip > 0
+            if j > k
+                return out
+            end
+            skip += i[j]
+            i[j] = (skip-1)%n+1
+            skip = (skip-1)÷n
+            j += 1
+        end
+        push!(out, copy(i))
+    end
+end
+
 end
