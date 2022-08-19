@@ -35,7 +35,7 @@ If that doesn't make sense or doesn't work for you, follow these more detailed i
  _/ |\__'_|_|_|\__'_|  |  Official https://julialang.org/ release
 |__/                   |
 
-julia> 
+julia>
 ```
 
 - Press `]` to enter `Pkg` mode. Your prompt should now look like this: `(@v1.7) pkg> `
@@ -55,3 +55,16 @@ julia>
 - You should see a message "Saved figures to /Users/x/.julia/packages/FBDCompare/XgjIN/figures". Go there and find the figures! You can also call `FBDCompare.make_figure_1()` directly to make and display just figure 1 (same for make_figure_2..6()). The figure at the beginning of the paper is figure 0. Make it with `FBDCompare.make_figure_0()`.
 
 - To get the full versions of the figures, run `save_figures(2)`. This will take many hours on most computers.
+
+## Sources
+
+This repository exists to compare [FunctionalBallDropping](https://github.com/LilithHafner/FunctionalBallDropping.jl) to the prior state ot the art. To ensure reproducibility, it includes a copy of the code of many previous systems that are not the work of Lilith Hafner, Chase Holender, or Nicole Eikmeier.
+
+src/hyper_pa/ is from: https://github.com/manhtuando97/KDD-20-Hypergraph,
+specifically: https://github.com/manhtuando97/KDD-20-Hypergraph/tree/e336c71f1ec7beebe8e6e3e779c8fa5c505dd9be/Code/Generator
+
+src/hyperkron.jl is from: https://www.cs.purdue.edu/homes/dgleich/codes/hyperkron/,
+specifically: https://www.cs.purdue.edu/homes/dgleich/codes/hyperkron/hyperkron.jl
+
+src/DCHSBM is from https://github.com/nveldt/HyperModularity.jl,
+specifically: https://github.com/nveldt/HyperModularity.jl/tree/0478acb5e209550cbaf7572f4151c4569f64faf6/src with the exception of adding a missing using statement to HSBM.jl.

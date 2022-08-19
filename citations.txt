@@ -1,5 +1,0 @@
-src/hyper_pa/ is from: https://github.com/manhtuando97/KDD-20-Hypergraph
-specifically: https://github.com/manhtuando97/KDD-20-Hypergraph/tree/e336c71f1ec7beebe8e6e3e779c8fa5c505dd9be/Code/Generator
-
-src/hyperkron.jl is from: https://www.cs.purdue.edu/homes/dgleich/codes/hyperkron/
-specifically: https://www.cs.purdue.edu/homes/dgleich/codes/hyperkron/hyperkron.jl
