@@ -1,20 +1,14 @@
 using FBDCompare
 using Test
 
-ci = ("CI"=>"true") ∈ ENV
+if ("CI"=>"true") ∈ ENV
+    run(`pip3 install numpy scipy argparse`)
+end
 
 @testset "HyperPA" begin
     HyperPA.jl_without_io()
     HyperPA.jl_with_io()
-    if ci
-        @test_broken false #=
-Traceback (most recent call last):
-  File "hyper_preferential_attachment.py", line 8, in <module>
-    import numpy as np
-ModuleNotFoundError: No module named 'numpy'
-=#  else
-        HyperPA.external()
-    end
+    HyperPA.external()
     @test true
 end
 
