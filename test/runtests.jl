@@ -35,7 +35,7 @@ end
         size, time, density
     end
 
-    # Note: missing figure 0
+    # Note: missing figure 0 at scales 1 and 2.
     FBDCompare.SCALE[] = 0
     FBDCompare.save_figures()
     FBDCompare.SCALE[] = 1
