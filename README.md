@@ -52,7 +52,7 @@ julia>
 
 - Type `save_figures()` and press enter to reproduce a small version of the main figures and save them. This should take a few minutes.
 
-- You should see a message "Saved figures to /Users/x/.julia/packages/FBDCompare/XgjIN/figures". Go there and find the figures! You can also call `FBDCompare.make_figure_1()` directly to make and display just figure 1 (same for make_figure_2..6()). The figure at the beginning of the paper is figure 0. Make it with `FBDCompare.make_figure_0()`.
+- You should see a message similar to "Saved figures to /Users/x/.julia/packages/FBDCompare/XgjIN/figures". Go there and find the figures! You can also call `FBDCompare.make_figure_1()` directly to make and display just figure 1 (same for make_figure_2..6()). The figure at the beginning of the paper is figure 0. Make it with `FBDCompare.make_figure_0()`.
 
 - To get the full versions of the figures, run `save_figures(2)`. This will take many hours on most computers.
 
