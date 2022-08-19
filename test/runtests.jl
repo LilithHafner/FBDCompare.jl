@@ -4,7 +4,7 @@ using Test
 ci = ("CI"=>"true") ∈ ENV
 
 if ci
-    run(`pip3 install numpy scipy`)
+    run(`pip3 install numpy scipy argparse`)
 end
 
 FBDCompare.make_figure_3()
