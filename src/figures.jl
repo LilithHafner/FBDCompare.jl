@@ -15,8 +15,6 @@ function datapoint(f, target_size, target_density=nothing)
     size, time, density
 end
 
-exp_range(start, stop, points) = exp.(LinRange(log(start), log(stop), points))
-
 function middles(y, x...)
     buckets = Dict()
     for (i, (yi, xi)) in enumerate(zip(y, zip(x...)))
