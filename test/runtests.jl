@@ -1,13 +1,9 @@
 using FBDCompare
 using Test
 
-ci = ("CI"=>"true") ∈ ENV
-
-if ci
+if ("CI"=>"true") ∈ ENV
     run(`pip3 install numpy scipy argparse`)
 end
-
-FBDCompare.make_figure_3()
 
 @testset "HyperPA" begin
     HyperPA.jl_without_io()
