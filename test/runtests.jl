@@ -7,6 +7,8 @@ if ci
     run(`pip install numpy`)
 end
 
+FBDCompare.make_figure_3()
+
 @testset "HyperPA" begin
     HyperPA.jl_without_io()
     HyperPA.jl_with_io()
