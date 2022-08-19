@@ -264,6 +264,8 @@ Generate figures for the paper and save them in the figures directory.
 Runtime is about 2 minutes for scale = 0 and many hours for scale = 2.
 The figures for the paper were generated at scale = 2.
 Larger scale corresponds to more replicates and higher maximum runtimes.
+
+See also `make_figure_0` to make the figure at the start of the paper.
 """
 function save_figures(scale::Integer=0)
 
@@ -285,6 +287,8 @@ function save_figures(scale::Integer=0)
     COMPUTE[] && println("Saved: $(save_data())")
     savefig(make_figure_6(), joinpath(path,"kronecker_density_k3.pdf"))
     COMPUTE[] && println("Saved: $(save_data())")
+
+    println("Saved figures to $path")
 end
 
 function save_data(n=round(Integer, time())%(60*60*24*365))
@@ -367,6 +371,8 @@ function make_figure_0()
         )
     path = joinpath(dirname(@__DIR__), "figures")
     mkpath(path)
-    savefig(joinpath(path, "er.pdf"))
+    file = joinpath(path, "er.pdf")
+    savefig(file)
+    println("Saved figure to $file")
     p
 end
