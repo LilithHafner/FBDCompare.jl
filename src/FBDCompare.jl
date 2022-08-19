@@ -16,8 +16,6 @@ module DCHSBM
     include("DCHSBM/HSBM.jl")
 end
 
-include("hyper_pa.jl")
-
 include("evaluation/test_functions.jl")
 include("evaluation/statistics.jl")
 
