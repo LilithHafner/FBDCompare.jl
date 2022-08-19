@@ -6,7 +6,7 @@
 /figures
 *.DS_store
 *__pycache__/
-data_*.txt
+raw*.txt
 /src/data/
 /test/gr-temp/
 /gr-temp/
