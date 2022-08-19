@@ -1,15 +1,20 @@
 using FBDCompare
 using Test
 
-if ("CI"=>"true") ∈ ENV
+if true#("CI"=>"true") ∈ ENV # a proxy for "are we missing python dependencies?"
+    @testset "HyperPA before install" begin
+        @test FBDCompare.hypergraphsize(FBDCompare.new_hyperpa()) > 10_000
+        @test FBDCompare.new_hyperpa_python() == [[1]] # Does not blow up,
+        @test FBDCompare.old_hyperpa() == [[1]] # but returns a dummy graph
+    end
+
     run(`pip3 install numpy scipy argparse`)
 end
 
 @testset "HyperPA" begin
-    HyperPA.jl_without_io()
-    HyperPA.jl_with_io()
-    HyperPA.external()
-    @test true
+    @test FBDCompare.hypergraphsize(FBDCompare.new_hyperpa()) > 10_000
+    @test FBDCompare.hypergraphsize(FBDCompare.old_hyperpa()) > 10_000
+    @test FBDCompare.hypergraphsize(FBDCompare.new_hyperpa_python()) > 10_000
 end
 
 @testset "hypergraphsize" begin

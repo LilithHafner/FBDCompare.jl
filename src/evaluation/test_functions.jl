@@ -82,11 +82,16 @@ function old_hyperpa(size::Integer=45000; name = "DAWN")
     rm(output_file, force=true)
 
     nodes::Integer = size ÷ 222 + 18
-    nodes ≥ 200 && @warn "expected runtime on the order of $(round(Integer, (nodes/200)^2)) minute(s)\n"
+    nodes > 200 && @warn "old_hyperpa expected runtime on the order of $(round(Integer, (nodes/200)^2)) minute(s)\n"
 
     dir = dirname(@__DIR__)
-    run(`python3 $dir/hyper_pa/hyper_preferential_attachment.py --name=$name --file_name=$name --num_nodes=$nodes --simplex_per_node_directory=$dir/hyper_pa/simplex\ per\ node --size_distribution_directory=$dir/hyper_pa/size\ distribution --output_directory=$output_directory`)
-    isfile(output_file) ? [parse.(Int, split(line)) for line in readlines(output_file)] : Vector{Int}[]
+    try
+        run(`python3 $dir/hyper_pa/hyper_preferential_attachment.py --name=$name --file_name=$name --num_nodes=$nodes --simplex_per_node_directory=$dir/hyper_pa/simplex\ per\ node --size_distribution_directory=$dir/hyper_pa/size\ distribution --output_directory=$output_directory`)
+    catch x
+        x isa ProcessFailedException || rethrow()
+        return [[1]]
+    end
+    isfile(output_file) ? [parse.(Int, split(line)) for line in readlines(output_file)] : [[1]]
 end
 function new_hyperpa_python(size::Integer=45000; name = "DAWN")
     output_directory = joinpath(@__DIR__, "..", "data", "hyper_pa")
@@ -97,8 +102,13 @@ function new_hyperpa_python(size::Integer=45000; name = "DAWN")
     nodes::Integer = size ÷ 222 + 18
 
     dir = dirname(@__DIR__)
-    run(`python3 $dir/FBD_hyper_pa/hyper_preferential_attachment.py --name=$name --file_name=$name --num_nodes=$nodes --simplex_per_node_directory=$dir/hyper_pa/simplex\ per\ node --size_distribution_directory=$dir/hyper_pa/size\ distribution --output_directory=$output_directory`)
-    isfile(output_file) ? [parse.(Int, split(line)) for line in readlines(output_file)] : Vector{Int}[]
+    try
+        run(`python3 $dir/FBD_hyper_pa/hyper_preferential_attachment.py --name=$name --file_name=$name --num_nodes=$nodes --simplex_per_node_directory=$dir/hyper_pa/simplex\ per\ node --size_distribution_directory=$dir/hyper_pa/size\ distribution --output_directory=$output_directory`)
+    catch x
+        x isa ProcessFailedException || rethrow()
+        return [[1]]
+    end
+    isfile(output_file) ? [parse.(Int, split(line)) for line in readlines(output_file)] : [[1]]
 end
 function new_hyperpa(size::Integer=45000)
     example(hyper_pa, size)
