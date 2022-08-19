@@ -274,31 +274,31 @@ function save_figures(scale::Integer=0)
     path = joinpath(dirname(@__DIR__), "figures")
     mkpath(path)
 
-    COMPUTE[] && println("Saved: $(save_data())")
     savefig(make_figure_1(), joinpath(path,"dchsbm_size.pdf"))
-    COMPUTE[] && println("Saved: $(save_data())")
+    COMPUTE[] && println("Saved figure data: $(save_data())")
     savefig(make_figure_2(), joinpath(path,"kronecker_size.pdf"))
-    COMPUTE[] && println("Saved: $(save_data())")
+    COMPUTE[] && println("Saved figure data: $(save_data())")
     savefig(make_figure_3(), joinpath(path,"hyperpa_size.pdf"))
-    COMPUTE[] && println("Saved: $(save_data())")
+    COMPUTE[] && println("Saved figure data: $(save_data())")
     savefig(make_figure_4(), joinpath(path,"dchsbm_density_k10.pdf"))
-    COMPUTE[] && println("Saved: $(save_data())")
+    COMPUTE[] && println("Saved figure data: $(save_data())")
     savefig(make_figure_5(), joinpath(path,"dchsbm_density_k3.pdf"))
-    COMPUTE[] && println("Saved: $(save_data())")
+    COMPUTE[] && println("Saved figure data: $(save_data())")
     savefig(make_figure_6(), joinpath(path,"kronecker_density_k3.pdf"))
-    COMPUTE[] && println("Saved: $(save_data())")
+    COMPUTE[] && println("Saved figure data: $(save_data())")
 
     println("Saved figures to $path")
 end
 
 function save_data(n=round(Integer, time())%(60*60*24*365))
-    open("data_$n.txt", "w") do io
+    mkpath("figure_data")
+    open(joinpath("figure_data","raw$n.txt"), "w") do io
         write(io, string(DATA))
     end
     n
 end
 function load_data(n)
-    v = read("data_$n.txt")
+    v = read(joinpath("figure_data","raw$n.txt"))
     s = String(v)
     s2 = replace(s,
         "FBDCompare.var" => "",
