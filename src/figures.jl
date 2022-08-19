@@ -29,7 +29,7 @@ end
 # Plotting functions
 const DATA = [[] for _ in 1:6]
 const COMPUTE = Ref(true)
-const SCALE = Ref(2)
+const SCALE = Ref(0)
 first_row_x = (
     xaxis = :log,
     #xlims = (10^.9, 10^8.6),
@@ -256,7 +256,18 @@ function make_figure_6()
 end
 
 ## Post processing
-function save_figures()
+"""
+    save_figures(scale = 0)
+
+Generate figures for the paper and save them in the figures directory.
+
+Runtime is about 2 minutes for scale = 0 and many hours for scale = 2.
+The figures for the paper were generated at scale = 2.
+Larger scale corresponds to more replicates and higher maximum runtimes.
+"""
+function save_figures(scale::Integer=0)
+
+    SCALE[] = scale
 
     path = joinpath(dirname(@__DIR__), "figures")
     mkpath(path)
