@@ -9,7 +9,6 @@ To reproduce our results, run the following at a Julia REPL:
 
 ```jl
 ;pip3 install numpy scipy argparse
-]add https://github.com/LilithHafner/FunctionalBallDropping.jl
 ]add https://github.com/LilithHafner/FBDCompare.jl
 
 using FBDCompare
