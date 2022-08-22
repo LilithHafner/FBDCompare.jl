@@ -8,7 +8,6 @@ This package contains the code used to generate the data and figures for a forth
 To reproduce our results, run the following at a Julia REPL:
 
 ```jl
-;pip3 install numpy scipy argparse
 ]add https://github.com/LilithHafner/FBDCompare.jl
 
 using FBDCompare
@@ -18,9 +17,11 @@ save_figures()
 
 If that doesn't make sense or doesn't work for you, follow these more detailed instructions:
 
-- Install Julia 1.7.3. Newer versions of Julia should work but may have different performance charactaristics.
+- [Install Julia](https://julialang.org/downloads/). We used 1.7.3. Newer versions of Julia should work but may have different performance charactaristics.
 
-- [Optional] Install Python 3.9.5, numpy, scipy, and argparse to compare with models implemented in python. Newer versions of python should also work. To install the packages, run `pip3 install numpy scipy argparse`.
+- [Optional] [Install Python](https://www.python.org/downloads/), numpy, scipy, and argparse to compare with models implemented in python. We used python 3.9.5, but newer versions of python should also work. To install the packages, run `pip3 install numpy scipy argparse`.
+
+- [Optional] Install Latex to render labels and legends for the plots.
 
 - Launch julia. You should now see something like this:
 
@@ -47,7 +48,7 @@ julia>
 
 - Load this package by typing `using FBDCompare`
 
-- Type `save_figures()` and press enter to reproduce a small version of the main figures and save them. This should take a few minutes.
+- Run `save_figures()` to reproduce a small version of the main figures and save them. This should take a few minutes.
 
 - When computation finishes, you should see a message similar to "Saved figures to /Users/x/.julia/packages/FBDCompare/XgjIN/figures". Go there and find the figures! You can also call `FBDCompare.make_figure_1()` directly to make and display just figure 1 (same for make_figure_2..6()). The figure at the beginning of the paper is figure 0. Make it with `FBDCompare.make_figure_0()`.
 
