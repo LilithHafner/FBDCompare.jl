@@ -18,7 +18,11 @@ jobs:
       fail-fast: false
       matrix:
         version:
-          - '1.7'
+          - '1.6'
+          - '1.7.3' # For the publication
+          - '1'
+          # Not testing on nightly because this is repo is for reproducibility,
+          # not future work. If you want to use FBD, see FunctionalBalDropping.jl
         os:
           - ubuntu-latest
           - macOS-latest
