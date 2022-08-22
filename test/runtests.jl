@@ -1,6 +1,10 @@
 using FBDCompare
 using Test
 
+@testset "hypergraphsize" begin
+    @test FBDCompare.hypergraphsize((Dict{Int64, Dict}(4 => Dict{Vector{Int64}, Int64}(), 2 => Dict([2, 4] => 1, [2, 6] => 1, [7, 7] => 1), 3 => Dict([5, 6, 6] => 1, [6, 6, 6] => 1), 1 => Dict([3] => 1, [7] => 1)), 1:7)) == 14
+end
+
 if ("CI"=>"true") ∈ ENV # a proxy for "are we missing python dependencies?"
     @testset "HyperPA before install" begin
         @test FBDCompare.hypergraphsize(FBDCompare.new_hyperpa()) > 10_000
@@ -15,10 +19,6 @@ end
     @test FBDCompare.hypergraphsize(FBDCompare.new_hyperpa()) > 10_000
     @test FBDCompare.hypergraphsize(FBDCompare.old_hyperpa()) > 10_000
     @test FBDCompare.hypergraphsize(FBDCompare.new_hyperpa_python()) > 10_000
-end
-
-@testset "hypergraphsize" begin
-    @test FBDCompare.hypergraphsize((Dict{Int64, Dict}(4 => Dict{Vector{Int64}, Int64}(), 2 => Dict([2, 4] => 1, [2, 6] => 1, [7, 7] => 1), 3 => Dict([5, 6, 6] => 1, [6, 6, 6] => 1), 1 => Dict([3] => 1, [7] => 1)), 1:7)) == 14
 end
 
 @testset "end to end" begin
